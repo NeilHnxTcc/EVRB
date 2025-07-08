@@ -1,0 +1,2 @@
+Is the person inside the red bounding box named James Garner? Please answer yes or no.	Yes
+Is the person inside the red bounding box named Chutimon Chuengcharoensukying? Please answer yes or no.	No

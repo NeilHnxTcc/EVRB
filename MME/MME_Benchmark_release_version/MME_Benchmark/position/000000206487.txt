@@ -1,0 +1,2 @@
+Is the motorcycle on the right side of the bus? Please answer yes or no.	Yes
+Is the motorcycle on the left side of the bus Please answer yes or no.	No

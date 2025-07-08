@@ -1,0 +1,2 @@
+Is this movie directed by jing wu? Please answer yes or no.	Yes
+Is this movie directed by david lynch? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Are the pedestrians on the right of the bus? Please answer yes or no.	Yes
+Are the pedestrians on the left of the bus? Please answer yes or no.	No

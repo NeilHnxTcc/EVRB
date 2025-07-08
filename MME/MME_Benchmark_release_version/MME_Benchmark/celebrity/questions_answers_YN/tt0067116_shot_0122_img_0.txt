@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Gene Hackman? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Russell G. Jones? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Is the area of the parallelogram in the picture equal to 24? Please answer yes or no.	Yes
+Is the area of the parallelogram in the picture equal to 6? Please answer yes or no.	No

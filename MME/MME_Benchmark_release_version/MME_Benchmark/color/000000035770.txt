@@ -1,0 +1,2 @@
+Is there a black and white toilet in the image? Please answer yes or no.	Yes
+Is there a red and white toilet in the image? Please answer yes or no.	No

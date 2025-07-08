@@ -1,0 +1,2 @@
+Is this movie directed by vincenzo natali? Please answer yes or no.	Yes
+Is this movie directed by raja gosnell? Please answer yes or no.	No

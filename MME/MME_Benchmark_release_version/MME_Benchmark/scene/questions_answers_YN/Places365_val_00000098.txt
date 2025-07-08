@@ -1,0 +1,2 @@
+Does this image describe a place of crosswalk? Please answer yes or no.	Yes
+Does this image describe a place of snowfield? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Does this image describe a place of restaurant kitchen? Please answer yes or no.	Yes
+Does this image describe a place of fabric store? Please answer yes or no.	No

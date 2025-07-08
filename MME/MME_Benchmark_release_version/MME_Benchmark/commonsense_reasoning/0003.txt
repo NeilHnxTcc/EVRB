@@ -1,0 +1,2 @@
+May I ask if in the game of finger-guessing game, did the right side of the picture win? Please answer yes or no.	Yes
+May I ask if in the game of finger-guessing game, did the left side of the picture win? Please answer yes or no.	No

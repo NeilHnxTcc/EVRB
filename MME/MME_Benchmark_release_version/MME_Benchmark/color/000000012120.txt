@@ -1,0 +1,2 @@
+Is there a blue court in the image? Please answer yes or no.	Yes
+Is there a purple court in the image? Please answer yes or no.	No

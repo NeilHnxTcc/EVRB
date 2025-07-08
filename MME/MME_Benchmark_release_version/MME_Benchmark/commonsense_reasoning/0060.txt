@@ -1,0 +1,2 @@
+This is the histogram of fruit sales today. Do more men buy watermelons than women buy bananas? Please answer yes or no.	Yes
+This is the histogram of fruit sales today. Do more men buy peach than women buy apple? Please answer yes or no.	No

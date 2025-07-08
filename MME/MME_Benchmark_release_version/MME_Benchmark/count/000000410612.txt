@@ -1,0 +1,2 @@
+Is there only one ship in the picture? Please answer yes or no.	Yes
+Is there a total of two ships in the picture? Please answer yes or no.	No

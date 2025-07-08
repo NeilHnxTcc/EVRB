@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Linda Harrison? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Michael McKean? Please answer yes or no.	No

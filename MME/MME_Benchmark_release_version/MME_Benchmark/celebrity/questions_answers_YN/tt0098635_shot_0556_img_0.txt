@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Meg Ryan? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Tom Branch? Please answer yes or no.	No

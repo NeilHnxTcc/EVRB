@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Michael J. Fox? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Momoko Komatsu? Please answer yes or no.	No

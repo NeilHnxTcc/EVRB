@@ -1,0 +1,2 @@
+Are there a white dish in the image? Please answer yes or no.	Yes
+Are there a green dish in the image? Please answer yes or no.	No

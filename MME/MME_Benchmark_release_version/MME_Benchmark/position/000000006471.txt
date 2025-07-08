@@ -1,0 +1,2 @@
+Is the cricket bat above the batter's body? Please answer yes or no.	Yes
+Is the cricket bat under the batter's body Please answer yes or no.	No

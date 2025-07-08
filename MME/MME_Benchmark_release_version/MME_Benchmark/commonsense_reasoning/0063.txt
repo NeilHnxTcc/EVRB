@@ -1,0 +1,2 @@
+Is the animal in the picture suitable as a pet? Please answer yes or no.	Yes
+Is the animal in the pictures usually stronger than adult tigers? Please answer yes or no.	No

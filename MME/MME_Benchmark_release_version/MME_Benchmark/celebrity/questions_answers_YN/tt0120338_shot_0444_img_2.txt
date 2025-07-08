@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Kate Winslet? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Donald Gibb? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Jennifer Jason Leigh? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Eric D. Sandgren? Please answer yes or no.	No

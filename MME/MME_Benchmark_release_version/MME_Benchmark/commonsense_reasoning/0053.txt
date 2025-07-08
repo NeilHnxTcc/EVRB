@@ -1,0 +1,2 @@
+Is the car in the picture going to make a right turn after going through a straight road section? Please answer yes or no.	Yes
+Is the car in the picture going to make a left turn after going through a straight road section? Please answer yes or no.	No

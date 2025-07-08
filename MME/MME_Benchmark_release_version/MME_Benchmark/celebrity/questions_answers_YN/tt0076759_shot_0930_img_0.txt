@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Harrison Ford? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Ryoko Sadoshima? Please answer yes or no.	No

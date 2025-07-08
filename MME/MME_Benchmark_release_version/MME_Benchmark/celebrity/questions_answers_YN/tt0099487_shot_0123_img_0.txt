@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Johnny Depp? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Farrah Forke? Please answer yes or no.	No

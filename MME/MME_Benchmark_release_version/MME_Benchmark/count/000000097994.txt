@@ -1,0 +1,2 @@
+Are there three laptops in the picture? Please answer yes or no.	Yes
+Are there four laptops in the picture? Please answer yes or no.	No

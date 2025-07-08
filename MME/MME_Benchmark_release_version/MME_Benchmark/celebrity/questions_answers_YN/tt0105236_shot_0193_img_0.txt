@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Harvey Keitel? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Terence Yin? Please answer yes or no.	No

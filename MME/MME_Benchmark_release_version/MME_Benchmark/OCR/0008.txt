@@ -1,0 +1,2 @@
+Is the word in the logo "phil's market"? Please answer yes or no.	Yes
+Is the word in the logo "phll's market"? Please answer yes or no.	No

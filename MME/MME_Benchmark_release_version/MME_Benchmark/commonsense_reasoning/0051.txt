@@ -1,0 +1,2 @@
+This is a flowchart of a program. When the input is 5, is the output 6? Please answer yes or no.	Yes
+This is a flowchart of a program. When the input is 6, is the output 5? Please answer yes or no.	No

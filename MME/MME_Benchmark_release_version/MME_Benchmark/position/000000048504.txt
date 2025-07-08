@@ -1,0 +1,2 @@
+Is the gray elephant in front of the brown elephant? Please answer yes or no.	Yes
+Is the brown elephant in front of the gray elephant? Please answer yes or no.	No

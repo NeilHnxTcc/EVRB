@@ -1,0 +1,2 @@
+This is a picture from a real scene. Is there only one real cat in this picture? Please answer yes or no.	Yes
+This is a picture from a real scene. Is there only two real cats in this picture? Please answer yes or no.	No

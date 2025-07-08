@@ -1,0 +1,2 @@
+Is the water flow in the picture from the top to the bottom? Please answer yes or no.	Yes
+Is the water flow in the picture from the bottom to the top? Please answer yes or no.	No

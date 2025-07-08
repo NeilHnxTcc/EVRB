@@ -1,0 +1,2 @@
+Is the light above the fire hydrant in the image? Please answer yes or no.	Yes
+Is the light under the fire hydrant in the image?  Please answer yes or no.	No

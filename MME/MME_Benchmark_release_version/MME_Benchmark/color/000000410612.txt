@@ -1,0 +1,2 @@
+Is there a red boat in the image? Please answer yes or no.	Yes
+Is there a gray boat in the image? Please answer yes or no.	No

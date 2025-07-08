@@ -1,0 +1,2 @@
+Is this movie directed by ron howard? Please answer yes or no.	Yes
+Is this movie directed by peter jackson? Please answer yes or no.	No

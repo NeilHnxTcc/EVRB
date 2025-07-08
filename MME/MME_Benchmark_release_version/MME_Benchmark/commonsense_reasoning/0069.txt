@@ -1,0 +1,2 @@
+Is the phone in the photo connected to a charger? Please answer yes or no.	Yes
+Is the phone in the photo charging? Please answer yes or no.	No

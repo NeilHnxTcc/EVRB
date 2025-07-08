@@ -1,0 +1,2 @@
+Is the area of the right triangle in the picture equal to 24? Please answer yes or no.	Yes
+Is the area of the right triangle in the picture equal to 8? Please answer yes or no.	No

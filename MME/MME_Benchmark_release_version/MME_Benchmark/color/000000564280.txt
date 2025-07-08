@@ -1,0 +1,2 @@
+Is there a red couch in the image? Please answer yes or no.	Yes
+Is there a black couch in the image? Please answer yes or no.	No

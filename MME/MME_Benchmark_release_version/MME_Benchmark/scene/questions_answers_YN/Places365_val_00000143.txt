@@ -1,0 +1,2 @@
+Is this photo taken in a place of house? Please answer yes or no.	Yes
+Is this photo taken in a place of swimming hole? Please answer yes or no.	No

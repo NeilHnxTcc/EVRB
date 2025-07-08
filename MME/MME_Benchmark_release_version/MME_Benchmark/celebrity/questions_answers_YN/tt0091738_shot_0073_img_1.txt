@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Kathleen Turner? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Pat Kiernan? Please answer yes or no.	No

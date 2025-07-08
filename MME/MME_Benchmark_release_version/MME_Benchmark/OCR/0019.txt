@@ -1,0 +1,2 @@
+Is the word in the logo "exchange hotel"? Please answer yes or no.	Yes
+Is the word in the logo "excharge hotel"? Please answer yes or no.	No

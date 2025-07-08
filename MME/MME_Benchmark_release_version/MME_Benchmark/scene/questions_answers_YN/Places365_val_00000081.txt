@@ -1,0 +1,2 @@
+Does this image describe a place of operating room? Please answer yes or no.	Yes
+Does this image describe a place of house? Please answer yes or no.	No

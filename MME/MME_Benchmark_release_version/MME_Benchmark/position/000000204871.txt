@@ -1,0 +1,2 @@
+Is the car on the right side of the fire hydrant in the picture? Please answer yes or no.	Yes
+Is the car on the left side of the fire hydrant in the picture? Please answer yes or no.	No

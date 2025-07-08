@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Robert Redford? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Cooper Murray? Please answer yes or no.	No

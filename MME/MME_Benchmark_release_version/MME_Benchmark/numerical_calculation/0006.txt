@@ -1,0 +1,2 @@
+Is the area of the square in the picture equal to 9? Please answer yes or no.	Yes
+Is the area of the square in the picture equal to 3? Please answer yes or no.	No

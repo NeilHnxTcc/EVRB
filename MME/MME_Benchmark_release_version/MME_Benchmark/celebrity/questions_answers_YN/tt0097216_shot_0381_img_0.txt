@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Danny Aiello? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Taissa Farmiga? Please answer yes or no.	No

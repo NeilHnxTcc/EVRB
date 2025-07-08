@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Richard Romanus? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Valerie Colgan? Please answer yes or no.	No

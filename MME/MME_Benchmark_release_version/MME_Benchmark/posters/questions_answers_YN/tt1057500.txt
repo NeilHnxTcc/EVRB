@@ -1,0 +1,2 @@
+Is this movie directed by clint eastwood? Please answer yes or no.	Yes
+Is this movie directed by john cassavetes? Please answer yes or no.	No

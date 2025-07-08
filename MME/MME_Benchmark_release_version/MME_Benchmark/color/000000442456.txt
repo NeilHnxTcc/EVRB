@@ -1,0 +1,2 @@
+Is there a man wearing a red shirt in the image? Please answer yes or no.	Yes
+Is there a man wearing a white shirt in the image? Please answer yes or no.	No

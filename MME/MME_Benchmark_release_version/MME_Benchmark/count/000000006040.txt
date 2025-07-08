@@ -1,0 +1,2 @@
+Is there a train in the picture? Please answer yes or no.	Yes
+Are there a total of two trains in the picture? Please answer yes or no.	No

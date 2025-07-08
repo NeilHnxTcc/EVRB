@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Hugh Jackman? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Lizzie Hopley? Please answer yes or no.	No

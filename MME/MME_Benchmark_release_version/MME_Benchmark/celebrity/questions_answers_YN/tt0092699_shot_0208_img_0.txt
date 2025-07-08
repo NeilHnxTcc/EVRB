@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called William Hurt? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Hildur Ruriks? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Is the grey sofa on the right of the TV? Please answer yes or no.	Yes
+Is the grey sofa on the left of the TV? Please answer yes or no.	No

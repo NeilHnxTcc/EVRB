@@ -1,0 +1,2 @@
+The man in the picture is eating. Does he eat noodles? Please answer yes or no.	Yes
+The man in the picture is eating. Does he eat rice? Please answer yes or no.	No

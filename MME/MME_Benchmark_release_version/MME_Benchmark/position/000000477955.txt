@@ -1,0 +1,2 @@
+Is the person under the kite? Please answer yes or no.	Yes
+Is the person above the kite? Please answer yes or no.	No

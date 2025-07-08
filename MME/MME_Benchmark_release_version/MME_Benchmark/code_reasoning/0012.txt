@@ -1,0 +1,2 @@
+The image shows a python code. Is the output of the code 'working hard'? Please answer yes or no.	Yes
+The image shows a python code. Is the output of the code 'playing hard'? Please answer yes or no.	No

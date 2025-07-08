@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Robert De Niro? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Pierre Malherbe? Please answer yes or no.	No

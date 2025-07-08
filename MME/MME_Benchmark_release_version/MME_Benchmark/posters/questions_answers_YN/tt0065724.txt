@@ -1,0 +1,2 @@
+Is this movie directed by bob rafelson? Please answer yes or no.	Yes
+Is this movie directed by anthony minghella? Please answer yes or no.	No

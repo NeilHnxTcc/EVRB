@@ -1,0 +1,2 @@
+Is this movie directed by elia kazan? Please answer yes or no.	Yes
+Is this movie directed by maneesh sharma? Please answer yes or no.	No

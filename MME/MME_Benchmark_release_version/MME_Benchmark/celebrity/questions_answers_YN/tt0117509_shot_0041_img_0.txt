@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Paul Rudd? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Max Martini? Please answer yes or no.	No

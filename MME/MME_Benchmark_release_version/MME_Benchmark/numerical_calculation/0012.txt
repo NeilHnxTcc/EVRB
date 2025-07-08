@@ -1,0 +1,2 @@
+Should the value of "a" in the picture equal 9? Please answer yes or no.	Yes
+Should the value of "a" in the picture equal 1? Please answer yes or no.	No

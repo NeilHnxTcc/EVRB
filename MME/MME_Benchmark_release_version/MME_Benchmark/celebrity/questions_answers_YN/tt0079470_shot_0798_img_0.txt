@@ -1,0 +1,2 @@
+Is the person inside the red bounding box named Eric Idle? Please answer yes or no.	Yes
+Is the person inside the red bounding box named Quincy Taylor? Please answer yes or no.	No

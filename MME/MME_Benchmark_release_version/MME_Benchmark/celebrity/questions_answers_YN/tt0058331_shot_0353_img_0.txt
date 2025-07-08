@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Julie Andrews? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Ed Geldart? Please answer yes or no.	No

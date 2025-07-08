@@ -1,0 +1,2 @@
+Are there two giraffes in this image? Please answer yes or no.	Yes
+Are there three giraffes in this picture? Please answer yes or no.	No

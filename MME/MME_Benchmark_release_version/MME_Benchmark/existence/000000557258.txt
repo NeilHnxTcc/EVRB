@@ -1,0 +1,2 @@
+Is there a toilet in this image? Please answer yes or no.	Yes
+Is there a pizza in this image? Please answer yes or no.	No

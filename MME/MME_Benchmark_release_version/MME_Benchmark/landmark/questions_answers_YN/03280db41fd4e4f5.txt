@@ -1,0 +1,2 @@
+Is this a picture of Oxford Street? Please answer yes or no.	Yes
+Is this a picture of Blake Fell? Please answer yes or no.	No

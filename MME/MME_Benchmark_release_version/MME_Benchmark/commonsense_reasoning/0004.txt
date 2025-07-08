@@ -1,0 +1,2 @@
+Does the fruit in the picture look stale? Please answer yes or no.	Yes
+Does the fruit in the picture look very fresh? Please answer yes or no.	No

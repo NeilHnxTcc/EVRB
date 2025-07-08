@@ -1,0 +1,2 @@
+Is there a umbrella in this image? Please answer yes or no.	Yes
+Is there a horse in this image? Please answer yes or no.	No

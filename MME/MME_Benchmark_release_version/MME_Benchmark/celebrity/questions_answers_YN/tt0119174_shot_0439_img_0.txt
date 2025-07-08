@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Michael Douglas? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Carola McGuinness? Please answer yes or no.	No

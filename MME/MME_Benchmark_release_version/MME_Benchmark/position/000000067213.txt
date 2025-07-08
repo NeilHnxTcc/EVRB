@@ -1,0 +1,2 @@
+Is the dog above the pool in the image? Please answer yes or no.	Yes
+Is the dog under the pool in the image? Please answer yes or no.	No

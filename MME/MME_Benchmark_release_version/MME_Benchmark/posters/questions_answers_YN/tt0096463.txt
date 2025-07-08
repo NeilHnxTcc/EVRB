@@ -1,0 +1,2 @@
+Is this movie directed by mike nichols? Please answer yes or no.	Yes
+Is this movie directed by cary joji fukunaga? Please answer yes or no.	No

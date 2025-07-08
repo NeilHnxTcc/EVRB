@@ -1,0 +1,2 @@
+Is it appropriate to translate the Chinese in the image into English 'delicious fruit' in the picture? Please answer yes or no.	Yes
+Is it appropriate to translate the Chinese in the image into English 'banana' in the picture? Please answer yes or no.	No

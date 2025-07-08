@@ -1,0 +1,2 @@
+Can the item in the picture output water? Please answer yes or no.	Yes
+Can the item in picture be used for blowing air? Please answer yes or no.	No

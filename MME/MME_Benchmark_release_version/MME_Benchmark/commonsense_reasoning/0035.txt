@@ -1,0 +1,2 @@
+This is the sales chart of this month. Is Tina the runner-up in sales this month? Please answer yes or no.	Yes
+This is the sales chart of this month. Is John the runner-up in sales this month? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Are there four people in the image? Please answer yes or no.	Yes
+Are there only three people in the image? Please answer yes or no.	No

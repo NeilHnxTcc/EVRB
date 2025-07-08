@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Marlon Brando? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Voltaire Sterling? Please answer yes or no.	No

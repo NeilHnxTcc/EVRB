@@ -1,0 +1,2 @@
+Is the spoon in the bowl? Please answer yes or no.	Yes
+Is the spoon out of the bowl? Please answer yes or no.	No

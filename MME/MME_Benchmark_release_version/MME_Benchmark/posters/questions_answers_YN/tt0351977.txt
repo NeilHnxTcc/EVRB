@@ -1,0 +1,2 @@
+Is this movie directed by kevin bray? Please answer yes or no.	Yes
+Is this movie directed by joe johnston? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+This line chart is used to count the sales of two types of burgers. Are chicken burgers more popular? Please answer yes or no.	Yes
+This line chart is used to count the sales of two types of burgers. Are beef burgers more popular? Please answer yes or no.	No

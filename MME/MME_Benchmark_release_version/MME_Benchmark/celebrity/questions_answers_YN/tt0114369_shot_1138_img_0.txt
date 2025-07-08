@@ -1,0 +1,2 @@
+Is the person inside the red bounding box named Brad Pitt? Please answer yes or no.	Yes
+Is the person inside the red bounding box named Benjamin Nitze? Please answer yes or no.	No

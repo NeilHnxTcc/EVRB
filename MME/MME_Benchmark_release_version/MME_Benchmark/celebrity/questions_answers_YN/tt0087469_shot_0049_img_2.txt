@@ -1,0 +1,2 @@
+Is the person inside the red bounding box named Harrison Ford? Please answer yes or no.	Yes
+Is the person inside the red bounding box named Paulo Benedeti? Please answer yes or no.	No

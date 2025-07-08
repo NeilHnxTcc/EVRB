@@ -1,0 +1,2 @@
+Are there two pieces of pizza in this image? Please answer yes or no.	Yes
+Is there only one piece of pizza in this image? Please answer yes or no.	No

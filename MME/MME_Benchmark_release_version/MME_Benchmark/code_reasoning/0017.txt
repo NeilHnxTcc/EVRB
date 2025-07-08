@@ -1,0 +1,2 @@
+The image shows a python code. Will the number 3 appear in the output of the code? Please answer yes or no.	Yes
+The image shows a python code. Will the number 6 appear in the output of the code? Please answer yes or no.	No

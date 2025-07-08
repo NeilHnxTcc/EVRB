@@ -1,0 +1,2 @@
+Is the person inside the red bounding box named Denzel Washington? Please answer yes or no.	Yes
+Is the person inside the red bounding box named Bill Pullman? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Is there a bus in this image? Please answer yes or no.	Yes
+Is there a cow in this image? Please answer yes or no.	No

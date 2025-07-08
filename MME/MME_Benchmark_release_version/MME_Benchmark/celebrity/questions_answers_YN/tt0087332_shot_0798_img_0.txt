@@ -1,0 +1,2 @@
+Is the person inside the red bounding box called Bill Murray? Please answer yes or no.	Yes
+Is the person inside the red bounding box called Jiao Xu? Please answer yes or no.	No

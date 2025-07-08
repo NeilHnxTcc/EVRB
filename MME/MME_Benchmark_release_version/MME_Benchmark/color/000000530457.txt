@@ -1,0 +1,2 @@
+Are there any red flowers in the image? Please answer yes or no.	Yes
+Are there any green flowers in the image? Please answer yes or no.	No

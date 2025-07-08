@@ -1,0 +1,2 @@
+Is the word in the logo "ihop restaurant"? Please answer yes or no.	Yes
+Is the word in the logo "lhop restaurant"? Please answer yes or no.	No

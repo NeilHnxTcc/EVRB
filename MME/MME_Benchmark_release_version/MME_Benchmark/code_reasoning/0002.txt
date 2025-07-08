@@ -1,0 +1,2 @@
+The image shows a python code. Is the output of the code 'a cat'? Please answer yes or no.	Yes
+The image shows a python code. Is the output of the code 'a dog'? Please answer yes or no.	No

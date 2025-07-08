@@ -1,0 +1,2 @@
+Is there a cake in this image? Please answer yes or no.	Yes
+Is there a tie in this image? Please answer yes or no.	No

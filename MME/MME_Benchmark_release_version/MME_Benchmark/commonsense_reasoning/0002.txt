@@ -1,0 +1,2 @@
+Should I stop when I'm about to cross the street and see the sign in the picture? Please answer yes or no.	Yes
+When I see the sign in the picture, can I cross the street? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Here is a photo of the sun's position at a certain time. Could it be dusk now? Please answer yes or no.	Yes
+Here is a photo of the sun's position at a certain time. Could it be noon now? Please answer yes or no.	No

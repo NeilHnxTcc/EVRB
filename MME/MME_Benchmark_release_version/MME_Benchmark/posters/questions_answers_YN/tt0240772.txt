@@ -1,0 +1,2 @@
+Is this movie directed by steven soderbergh? Please answer yes or no.	Yes
+Is this movie directed by paul mcguigan? Please answer yes or no.	No

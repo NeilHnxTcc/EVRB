@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Ed Harris? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Paul J.Q. Lee? Please answer yes or no.	No

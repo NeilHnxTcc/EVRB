@@ -1,0 +1,2 @@
+Is the word in the logo "c'est cheese"? Please answer yes or no.	Yes
+Is the word in the logo "crest cheese"? Please answer yes or no.	No

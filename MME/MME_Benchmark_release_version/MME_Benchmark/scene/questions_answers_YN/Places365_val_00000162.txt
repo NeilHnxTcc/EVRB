@@ -1,0 +1,2 @@
+Does this image describe a place of train station platform? Please answer yes or no.	Yes
+Does this image describe a place of manufactured home? Please answer yes or no.	No

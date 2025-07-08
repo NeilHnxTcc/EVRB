@@ -1,0 +1,2 @@
+This pie chart is the age distribution of our company. Is the proportion of people aged 30-50 more than 40%? Please answer yes or no.	Yes
+This pie chart is the age distribution of our company. Is the proportion of people aged 40-50 more than 30%? Please answer yes or no.	No

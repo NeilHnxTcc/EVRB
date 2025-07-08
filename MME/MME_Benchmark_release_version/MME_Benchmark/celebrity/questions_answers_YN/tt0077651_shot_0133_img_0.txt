@@ -1,0 +1,2 @@
+Is the person inside the red bounding box called Jamie Lee Curtis? Please answer yes or no.	Yes
+Is the person inside the red bounding box called Paris Arrowsmith? Please answer yes or no.	No

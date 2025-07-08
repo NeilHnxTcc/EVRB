@@ -1,0 +1,2 @@
+Is the fruit in the picture usually sweet? Please answer yes or no.	Yes
+Is the fruit in the picture usually spicy? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Are there two horses in this image? Please answer yes or no.	Yes
+Is there only one horse in this image? Please answer yes or no.	No

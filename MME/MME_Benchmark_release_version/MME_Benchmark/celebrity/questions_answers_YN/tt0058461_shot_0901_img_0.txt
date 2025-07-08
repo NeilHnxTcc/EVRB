@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Gian Maria Volontè? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Jennifer Connelly? Please answer yes or no.	No

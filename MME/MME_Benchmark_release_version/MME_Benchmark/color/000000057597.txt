@@ -1,0 +1,2 @@
+Are there any red shoes in the image? Please answer yes or no.	Yes
+Are there any yellow shoes in the image? Please answer yes or no.	No

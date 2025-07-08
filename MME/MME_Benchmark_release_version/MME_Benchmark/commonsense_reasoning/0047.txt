@@ -1,0 +1,2 @@
+All apples are shown in the picture. My brother and I divide the apples equally. May I have one apple? Please answer yes or no.	Yes
+All apples are shown in the picture. My brother and I divide the apples equally. May I have two apples? Please answer yes or no.	No

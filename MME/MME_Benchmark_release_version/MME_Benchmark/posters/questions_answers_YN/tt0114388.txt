@@ -1,0 +1,2 @@
+Is this movie directed by ang lee? Please answer yes or no.	Yes
+Is this movie directed by david lowery? Please answer yes or no.	No

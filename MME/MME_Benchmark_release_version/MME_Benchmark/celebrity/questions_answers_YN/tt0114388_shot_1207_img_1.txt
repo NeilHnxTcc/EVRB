@@ -1,0 +1,2 @@
+Is the person inside the red bounding box called Hugh Grant? Please answer yes or no.	Yes
+Is the person inside the red bounding box called Zach Hopkins? Please answer yes or no.	No

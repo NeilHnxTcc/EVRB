@@ -1,0 +1,2 @@
+Is there a clock in this image? Please answer yes or no.	Yes
+Is there a bottle in this image? Please answer yes or no.	No

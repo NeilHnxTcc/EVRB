@@ -1,0 +1,2 @@
+Is the TV on the left of the bookshelf? Please answer yes or no.	Yes
+Is the TV on the right of the bookshelf? Please answer yes or no.	No

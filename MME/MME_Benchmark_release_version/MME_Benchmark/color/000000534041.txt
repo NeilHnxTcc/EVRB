@@ -1,0 +1,2 @@
+Is there a purple bottle in the image? Please answer yes or no.	Yes
+Is there a white bottle in the image? Please answer yes or no.	No

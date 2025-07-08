@@ -1,0 +1,2 @@
+Are there two tennis rackets in the picture? Please answer yes or no.	Yes
+Are there only one tennis racket in the picture? Please answer yes or no.	No

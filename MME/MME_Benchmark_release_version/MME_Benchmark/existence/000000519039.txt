@@ -1,0 +1,2 @@
+Is there a truck in this image? Please answer yes or no.	Yes
+Is there a book in this image? Please answer yes or no.	No

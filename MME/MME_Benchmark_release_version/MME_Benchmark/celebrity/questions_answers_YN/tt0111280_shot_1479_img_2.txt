@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called William Shatner? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Richard Rohrbough? Please answer yes or no.	No

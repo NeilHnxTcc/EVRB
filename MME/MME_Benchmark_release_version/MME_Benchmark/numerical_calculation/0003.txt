@@ -1,0 +1,2 @@
+Is the answer to the arithmetic question in the image 65? Please answer yes or no.	Yes
+Is the answer to the arithmetic question in the image 56? Please answer yes or no.	No

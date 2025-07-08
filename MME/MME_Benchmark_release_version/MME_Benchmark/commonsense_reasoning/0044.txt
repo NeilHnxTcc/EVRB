@@ -1,0 +1,2 @@
+This is a flowchart of a program. I enter 3 and 6. Is the output 'No'? Please answer yes or no.	Yes
+This is a flowchart of a program. I enter 3 and 6. Is the output 'Yes'? Please answer yes or no.	No

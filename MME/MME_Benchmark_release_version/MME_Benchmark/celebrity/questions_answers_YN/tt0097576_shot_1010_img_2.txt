@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Harrison Ford? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named M. Emmet Walsh? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+The image shows a python code. Is the output of the code '3'? Please answer yes or no.	Yes
+The image shows a python code. Is the output of the code '2'? Please answer yes or no.	No

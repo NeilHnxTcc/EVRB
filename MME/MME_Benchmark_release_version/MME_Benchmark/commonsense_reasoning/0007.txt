@@ -1,0 +1,2 @@
+I want to clean the house and I want to choose a tool. Is the tool in the picture an appropriate choice? Please answer yes or no.	Yes
+I want to transport something and I want to choose a tool to help me. Is the tool in the picture an appropriate choice? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Kathleen Turner? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Aaron Henderson? Please answer yes or no.	No

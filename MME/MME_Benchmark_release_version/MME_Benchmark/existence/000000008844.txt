@@ -1,0 +1,2 @@
+Is there a person in this image? Please answer yes or no.	Yes
+Is there a sink in this image? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Are there three remotes in this image? Please answer yes or no.	Yes
+Are there only two remotes in this image? Please answer yes or no.	No

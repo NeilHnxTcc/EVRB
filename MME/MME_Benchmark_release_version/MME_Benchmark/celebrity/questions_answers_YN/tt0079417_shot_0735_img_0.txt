@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Meryl Streep? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Ross Lacy? Please answer yes or no.	No

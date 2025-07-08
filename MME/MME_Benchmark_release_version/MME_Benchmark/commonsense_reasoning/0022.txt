@@ -1,0 +1,2 @@
+Does the animal in the picture usually catch mice? Please answer yes or no.	Yes
+Is the animal in the picture usually used in search and rescue? Please answer yes or no.	No

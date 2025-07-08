@@ -1,0 +1,2 @@
+Is the person inside the red bounding box named Al Pacino? Please answer yes or no.	Yes
+Is the person inside the red bounding box named Nick Porrazzo? Please answer yes or no.	No

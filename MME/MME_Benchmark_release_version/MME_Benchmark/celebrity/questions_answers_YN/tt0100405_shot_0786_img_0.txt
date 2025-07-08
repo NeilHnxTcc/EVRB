@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Jason Alexander? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Alexandra Bastedo? Please answer yes or no.	No

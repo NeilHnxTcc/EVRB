@@ -1,0 +1,2 @@
+Can the item in the picture be used to measure length? Please answer yes or no.	Yes
+Can the item in the picture be used to measure angles? Please answer yes or no.	No

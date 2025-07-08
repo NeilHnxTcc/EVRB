@@ -1,0 +1,2 @@
+Is the refrigerator on the left side of the picture? Please answer yes or no.	Yes
+Is the refrigerator on the right side of the picture Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Is the text in the picture "hollywood"? Please answer yes or no.	Yes
+Is the text in the picture "holly word"? Please answer yes or no.	No

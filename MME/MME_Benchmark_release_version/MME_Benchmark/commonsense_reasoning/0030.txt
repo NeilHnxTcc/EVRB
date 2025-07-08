@@ -1,0 +1,2 @@
+I'm going to 501. Do I need to turn left at the intersection? Please answer yes or no.	Yes
+I'm going to 502. Do I need to turn left at the intersection? Please answer yes or no.	No

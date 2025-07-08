@@ -1,0 +1,2 @@
+All apples are shown in the picture. If I eat an apple every day, can I eat it for four days? Please answer yes or no.	Yes
+All apples are shown in the picture. If I eat an apple every day, can I eat it for three days? Please answer yes or no.	No

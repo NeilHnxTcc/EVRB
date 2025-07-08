@@ -1,0 +1,2 @@
+Are there two toilets in the picture? Please answer yes or no.	Yes
+Is there only one toilet in the picture? Please answer yes or no.	No

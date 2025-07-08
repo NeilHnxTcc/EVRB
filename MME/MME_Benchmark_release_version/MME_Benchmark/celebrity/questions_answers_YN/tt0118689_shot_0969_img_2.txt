@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Rowan Atkinson? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Jack Shields? Please answer yes or no.	No

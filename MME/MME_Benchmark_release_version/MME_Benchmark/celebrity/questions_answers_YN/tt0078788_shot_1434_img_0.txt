@@ -1,0 +1,2 @@
+Is the person inside the red bounding box called Martin Sheen? Please answer yes or no.	Yes
+Is the person inside the red bounding box called Le Capriccio Français? Please answer yes or no.	No

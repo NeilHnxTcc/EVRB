@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Kevin Costner? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Colin Hill? Please answer yes or no.	No

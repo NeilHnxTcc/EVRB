@@ -1,0 +1,2 @@
+Is there only one bottle in the image? Please answer yes or no.	Yes
+Is there two bottles in the image? Please answer yes or no.	No

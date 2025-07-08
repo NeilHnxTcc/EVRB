@@ -1,0 +1,2 @@
+Is there a train in this image? Please answer yes or no.	Yes
+Is there a bed in this image? Please answer yes or no.	No

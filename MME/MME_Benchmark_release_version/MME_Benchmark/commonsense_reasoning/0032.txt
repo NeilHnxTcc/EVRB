@@ -1,0 +1,2 @@
+Here is a picture of the cake I cut. Did I cut it at least twice? Please answer yes or no.	Yes
+Here is a picture of the cake I cut. Did I cut it at least once? Please answer yes or no.	No

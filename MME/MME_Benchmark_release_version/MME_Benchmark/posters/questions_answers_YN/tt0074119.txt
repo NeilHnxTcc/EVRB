@@ -1,0 +1,2 @@
+Is this movie directed by alan j. pakula? Please answer yes or no.	Yes
+Is this movie directed by stanley kubrick? Please answer yes or no.	No

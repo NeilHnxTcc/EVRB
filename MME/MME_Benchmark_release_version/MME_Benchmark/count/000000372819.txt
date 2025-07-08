@@ -1,0 +1,2 @@
+Are there four dogs appear in this image? Please answer yes or no.	Yes
+Are there only three dogs appear in this image? Please answer yes or no.	No

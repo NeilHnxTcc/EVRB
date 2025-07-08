@@ -1,0 +1,2 @@
+Is the baby on the right of the dog in the image? Please answer yes or no.	Yes
+Is the baby on the left of the dog in the image? Please answer yes or no.	No

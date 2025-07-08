@@ -1,0 +1,2 @@
+Is the word in the logo "high time coffee shop"? Please answer yes or no.	Yes
+Is the word in the logo "high tite cofeee shop"? Please answer yes or no.	No

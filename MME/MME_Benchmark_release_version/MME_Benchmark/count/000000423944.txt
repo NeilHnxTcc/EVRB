@@ -1,0 +1,2 @@
+Is there no person in this picture? Please answer yes or no.	Yes
+Are there two people appear in this image? Please answer yes or no.	No

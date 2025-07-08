@@ -1,0 +1,2 @@
+Here are the order details for my taxi ride. Should I actually pay $29.42? Please answer yes or no.	Yes
+Here are the order details for my taxi ride. Should I actually pay $32.42? Please answer yes or no.	No

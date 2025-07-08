@@ -1,0 +1,2 @@
+Is the person inside the red bounding box named Christopher Masterson? Please answer yes or no.	Yes
+Is the person inside the red bounding box named Edwin Craig? Please answer yes or no.	No

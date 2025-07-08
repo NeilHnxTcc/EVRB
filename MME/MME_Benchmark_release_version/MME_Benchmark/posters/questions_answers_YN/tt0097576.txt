@@ -1,0 +1,2 @@
+Is this movie directed by steven spielberg? Please answer yes or no.	Yes
+Is this movie directed by francis ford coppola? Please answer yes or no.	No

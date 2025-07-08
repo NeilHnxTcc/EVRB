@@ -1,0 +1,2 @@
+Is the white mouse on the right of the black keyboard? Please answer yes or no.	Yes
+Is the white mouse on the left of the black keyboard? Please answer yes or no.	No

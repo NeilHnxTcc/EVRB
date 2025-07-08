@@ -1,0 +1,2 @@
+Are there any green beans in the image? Please answer yes or no.	Yes
+Are there any orange beans in the image? Please answer yes or no.	No

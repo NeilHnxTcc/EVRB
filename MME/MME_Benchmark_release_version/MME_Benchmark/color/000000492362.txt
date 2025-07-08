@@ -1,0 +1,2 @@
+Is there a skateboard with red wheels in the image? Please answer yes or no.	Yes
+Is there a skateboard with black wheels in the image? Please answer yes or no.	No

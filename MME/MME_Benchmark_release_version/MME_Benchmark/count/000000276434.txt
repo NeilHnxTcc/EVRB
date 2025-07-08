@@ -1,0 +1,2 @@
+Is there a total of three cakes in this image? Please answer yes or no.	Yes
+Are there only two cakes in this image? Please answer yes or no.	No

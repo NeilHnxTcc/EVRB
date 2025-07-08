@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Sally Field? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Giorgio Libassi? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Does this image describe a place of street? Please answer yes or no.	Yes
+Does this image describe a place of golf course? Please answer yes or no.	No

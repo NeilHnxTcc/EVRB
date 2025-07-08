@@ -1,0 +1,2 @@
+Is the person inside the red bounding box called Gary Busey? Please answer yes or no.	Yes
+Is the person inside the red bounding box called Alfred Tiaki Hotu? Please answer yes or no.	No

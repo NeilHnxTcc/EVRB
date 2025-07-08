@@ -1,0 +1,2 @@
+Are there yellow poles in the image? Please answer yes or no.	Yes
+Are there blue poles in the image? Please answer yes or no.	No

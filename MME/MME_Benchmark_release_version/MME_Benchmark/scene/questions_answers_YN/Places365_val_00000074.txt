@@ -1,0 +1,2 @@
+Is this photo taken in a place of mausoleum? Please answer yes or no.	Yes
+Is this photo taken in a place of train station platform? Please answer yes or no.	No

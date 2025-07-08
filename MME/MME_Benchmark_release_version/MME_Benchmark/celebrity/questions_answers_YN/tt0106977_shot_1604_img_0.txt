@@ -1,0 +1,2 @@
+Is the person inside the red bounding box named Tommy Lee Jones? Please answer yes or no.	Yes
+Is the person inside the red bounding box named Honey Chhaya? Please answer yes or no.	No

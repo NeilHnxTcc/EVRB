@@ -1,0 +1,2 @@
+Is there a chair in this image? Please answer yes or no.	Yes
+Is there a dog in this image? Please answer yes or no.	No

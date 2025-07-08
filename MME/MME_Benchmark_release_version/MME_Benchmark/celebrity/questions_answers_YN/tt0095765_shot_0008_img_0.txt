@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Antonella Attili? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Amber Estrada? Please answer yes or no.	No

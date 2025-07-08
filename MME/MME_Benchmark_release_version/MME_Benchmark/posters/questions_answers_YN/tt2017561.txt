@@ -1,0 +1,2 @@
+Is this movie directed by stephen chow,chi-kin kwok? Please answer yes or no.	Yes
+Is this movie directed by craig gillespie? Please answer yes or no.	No

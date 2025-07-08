@@ -1,0 +1,2 @@
+Is there a bicycle in this image? Please answer yes or no.	Yes
+Is there a apple in this image? Please answer yes or no.	No

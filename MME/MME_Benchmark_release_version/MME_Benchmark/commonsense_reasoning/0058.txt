@@ -1,0 +1,2 @@
+Can't I smoke here? Please answer yes or no.	Yes
+May I smoke here? Please answer yes or no.	No

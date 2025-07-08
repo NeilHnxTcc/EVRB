@@ -1,0 +1,2 @@
+Is there a total of two dogs in the image? Please answer yes or no.	Yes
+Is there only one dogs in the image? Please answer yes or no.	No

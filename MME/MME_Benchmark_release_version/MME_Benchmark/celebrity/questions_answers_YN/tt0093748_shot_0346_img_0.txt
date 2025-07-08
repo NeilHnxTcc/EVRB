@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called John Candy? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Sarah Heller? Please answer yes or no.	No

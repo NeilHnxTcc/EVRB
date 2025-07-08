@@ -1,0 +1,2 @@
+Are there three people appear in this image? Please answer yes or no.	Yes
+Are there only two people appear in this image? Please answer yes or no.	No

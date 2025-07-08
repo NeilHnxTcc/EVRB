@@ -1,0 +1,2 @@
+Is it appropriate to translate the Chinese in the image into English 'sunny weather' in the picture? Please answer yes or no.	Yes
+Is it appropriate to translate the Chinese in the image into English 'cold weather' in the picture? Please answer yes or no.	No

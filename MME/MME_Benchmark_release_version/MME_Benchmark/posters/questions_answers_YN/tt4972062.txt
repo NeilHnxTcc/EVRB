@@ -1,0 +1,2 @@
+Is this movie directed by mike birbiglia? Please answer yes or no.	Yes
+Is this movie directed by david fincher? Please answer yes or no.	No

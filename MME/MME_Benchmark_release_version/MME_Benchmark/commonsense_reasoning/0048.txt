@@ -1,0 +1,2 @@
+Here is a picture of eating fruit. Am I eating a strawberry? Please answer yes or no.	Yes
+Here is a picture of eating fruit. Am I eating a cherry tomato? Please answer yes or no.	No

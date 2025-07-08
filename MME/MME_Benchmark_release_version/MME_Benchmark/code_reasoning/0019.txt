@@ -1,0 +1,2 @@
+The image shows a python code. Is the output of the code 'the list has more than 2 numbers'? Please answer yes or no.	Yes
+The image shows a python code. Is the output of the code 'the list has less than 2 numbers'? Please answer yes or no.	No

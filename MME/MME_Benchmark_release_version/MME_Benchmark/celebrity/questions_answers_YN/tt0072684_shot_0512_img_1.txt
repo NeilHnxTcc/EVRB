@@ -1,0 +1,2 @@
+Is the person inside the red bounding box named Marisa Berenson? Please answer yes or no.	Yes
+Is the person inside the red bounding box named Graham Bohea? Please answer yes or no.	No

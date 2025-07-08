@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box named Al Pacino? Please answer yes or no.	Yes
+Is the actor inside the red bounding box named Neil Tweddle? Please answer yes or no.	No

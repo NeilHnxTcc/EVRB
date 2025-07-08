@@ -1,0 +1,2 @@
+Is there a green hat in the image? Please answer yes or no.	Yes
+Is there a red hat in the image? Please answer yes or no.	No

@@ -1,0 +1,2 @@
+Is there a backpack in this image? Please answer yes or no.	Yes
+Is there a microwave in this image? Please answer yes or no.	No

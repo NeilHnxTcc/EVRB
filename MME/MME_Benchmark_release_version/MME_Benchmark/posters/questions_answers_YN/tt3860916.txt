@@ -1,0 +1,2 @@
+Is this movie directed by ben howling? Please answer yes or no.	Yes
+Is this movie directed by quentin tarantino? Please answer yes or no.	No

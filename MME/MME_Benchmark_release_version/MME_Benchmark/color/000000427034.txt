@@ -1,0 +1,2 @@
+Is there a brown and black dog in the image? Please answer yes or no.	Yes
+Is there a brown and white dog in the image? Please answer yes or no.	No

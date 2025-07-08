@@ -1,0 +1,2 @@
+Is the actor inside the red bounding box called Nicolas Cage? Please answer yes or no.	Yes
+Is the actor inside the red bounding box called Juan Gabriel Pareja? Please answer yes or no.	No

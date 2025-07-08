@@ -1,0 +1,2 @@
+Is this movie directed by luke scott? Please answer yes or no.	Yes
+Is this movie directed by dominic sena? Please answer yes or no.	No

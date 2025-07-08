@@ -1,0 +1,2 @@
+Is the person inside the red bounding box called Kathleen Quinlan? Please answer yes or no.	Yes
+Is the person inside the red bounding box called Veronica Diaz Carranza? Please answer yes or no.	No
