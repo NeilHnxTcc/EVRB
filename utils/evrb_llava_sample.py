@@ -347,41 +347,24 @@ def _sample(
 
     #------------------------------hnx-st-------------------------------------
     if do_ct:
-        # model_kwargs:  
-        # attention_mask: [bs, num_token]
-        # past_key_values : transformers.cache_utils.DynamicCache object 
-        # cache_position : [num_token] 
-        #  
-        # pixel_values [H,W] original size
-        # image grid thw : [bs, x, x ]
-        # use_cache : True
 
         # prepare model inputs
         model_kwargs['position_ids'] = model_kwargs['cache_position'].unsqueeze(0).clone()
         model_inputs = self.prepare_inputs_for_generation(input_ids, **model_kwargs)
         outputs = self(**model_inputs, return_dict=True,output_hidden_states=True)
-        #  logits : [bs, num_token, voc=152064]
-        #  past_key_values : transformers.cache_utils.DynamicCache   .key_cache || .value_cache : list(layer_num=28)[bs, hd=4,num_token,dim=128]
-        #  hidden_states : tuple(29)[bs, num_token, dim=3584]
-        
 
         # get the last hidden state 
         last_hidden_state = outputs['hidden_states'][-1]
         # locate the visual tokens:  32000 in input ids
         img_idx = torch.where(input_ids == img_id) # tuple(2) img_num   
         # forward the tokens and get the visual tokens last hidden state
-        img_last_hidden_state = last_hidden_state[img_idx] #[img_num, dim=3584]
+        img_last_hidden_state = last_hidden_state[img_idx] #[img_num, dim]
         # self.lm_head process the visual tokens and get the probability 
         img_logits = self.lm_head(img_last_hidden_state) 
         # calculate the entropy: vocabulary size: 32064, max entropy 14.9687 (log2)
         image_prob = torch.nn.functional.softmax(img_logits, dim= -1)
         image_entropy = (- image_prob * torch.log2(image_prob+torch.finfo(image_prob.dtype).eps)).sum(dim = -1) #  num_token
         # statistic the image token number of different interval (20)
-        # img_entropy_rounded = image_entropy.round()
-        # value, count = torch.unique(img_entropy_rounded.int(), return_counts = True)
-        # result = {'value':value, 'count':count}
-        # return result
-        
         
         # locate the large entropy tokens
         img_st, img_ed = img_idx[1][0], img_idx[1][-1] + 1
