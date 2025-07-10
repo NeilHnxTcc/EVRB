@@ -57,7 +57,7 @@ def recorder(out):
     else:
         return "Yes"
 
-def load_data(task_name='color', root='/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/hallucination/MME/MME_Benchmark_release_version/MME_Benchmark',img_type='jpg'):
+def load_data(task_name='color', root='./MME/MME_Benchmark_release_version/MME_Benchmark',img_type='jpg'):
     image_folder = os.path.join(root, task_name, 'images')
     qa_folder = os.path.join(root, task_name, 'questions_answers_YN')
     if os.path.exists(image_folder):
@@ -117,14 +117,14 @@ def eval_model(args):
             "content": [
                 {
                     "type": "image",
-                    "image": "/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/Qwen2.5-VL/my_example/424_1748933285.mp4",
+                    "image": "../Qwen2.5-VL/my_example/424_1748933285.mp4",
                 },
                 {"type": "text", "text": "When did the cat walk away?"},
             ],
         }
     ]
 
-    ckpt_path = "/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/Qwen2.5-VL/Qwen/Qwen2.5-VL-7B-Instruct"
+    ckpt_path = "../Qwen2.5-VL/Qwen/Qwen2.5-VL-7B-Instruct"
     if args.do_eos:
         model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
         ckpt_path, torch_dtype="auto", device_map=device, attn_implementation='eager',
@@ -222,7 +222,7 @@ if __name__ == "__main__":
         "in xxx=yyy format will be merged into config file (deprecate), "
         "change to --cfg-options instead.",
     )
-    parser.add_argument("--data-path", type=str, default="/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/data/coco/val2014", help="data path")
+    parser.add_argument("--data-path", type=str, default="../data/coco/val2014", help="data path")
     parser.add_argument("--batch-size", type=int, default=1, help="batch size")
     parser.add_argument("--num-workers", type=int, default=1, help="num workers")
 
@@ -233,7 +233,7 @@ if __name__ == "__main__":
 
 
 
-    parser.add_argument("--data-folder", type=str, default='/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/hallucination/MME/MME_Benchmark_release_version/MME_Benchmark')
+    parser.add_argument("--data-folder", type=str, default='./MME/MME_Benchmark_release_version/MME_Benchmark')
     parser.add_argument("--save-folder", type=str, default="./log/results")
     parser.add_argument("--save-name", type=str, default="baseline")
 

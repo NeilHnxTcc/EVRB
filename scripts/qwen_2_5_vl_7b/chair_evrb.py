@@ -55,7 +55,7 @@ parser.add_argument(
     "in xxx=yyy format will be merged into config file (deprecate), "
     "change to --cfg-options instead.",
 )
-parser.add_argument("--data-path", type=str, default="/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/datasets/coco/val2014", help="data path")
+parser.add_argument("--data-path", type=str, default="../datasets/coco/val2014", help="data path")
 parser.add_argument("--batch-size", type=int, default=1, help="batch size")
 parser.add_argument("--num-workers", type=int, default=1, help="num workers")
 
@@ -114,7 +114,7 @@ messages = [
     }
 ]
 
-ckpt_path = "/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/Qwen2.5-VL/Qwen/Qwen2.5-VL-7B-Instruct"
+ckpt_path = "../Qwen2.5-VL/Qwen/Qwen2.5-VL-7B-Instruct"
 
 if args.do_eos:
     model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
@@ -134,7 +134,7 @@ processor = AutoProcessor.from_pretrained(ckpt_path)
 img_files = os.listdir(args.data_path)
 random.shuffle(img_files)
 
-with open('/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/datasets/coco/annotations/instances_val2014.json', 'r') as f:
+with open('../datasets/coco/annotations/instances_val2014.json', 'r') as f:
     lines = f.readlines()
 coco_anns = json.loads(lines[0])
 

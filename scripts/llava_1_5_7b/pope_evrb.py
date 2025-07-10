@@ -71,8 +71,8 @@ def parse_args():
     parser.add_argument("--model", type=str, default="llava-1.5", help="model")
     parser.add_argument("--pope-type", type=str, default="coco_adversarial", help="model")
     parser.add_argument("--gpu-id", type=int, default=2, help="specify the gpu to load the model.")
-    parser.add_argument("--data-path", type=str, default="/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/datasets/coco/val2014", help="data path")
-    parser.add_argument("--gqa-data-path", type=str, default="/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/datasets/gqa/images", help="data path")
+    parser.add_argument("--data-path", type=str, default="../datasets/coco/val2014", help="data path")
+    parser.add_argument("--gqa-data-path", type=str, default="../datasets/gqa/images", help="data path")
     parser.add_argument("--batch-size", type=int, default=1, help="batch size")
     parser.add_argument("--num_workers", type=int, default=1, help="num workers")
     parser.add_argument("--options")
@@ -202,7 +202,7 @@ def main():
     print('Initializing Model')
 
 
-    ckpt_path = "/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/EVRB_github/ckpts/llava-v1.5-7b-hf"
+    ckpt_path = "./ckpts/llava-v1.5-7b-hf"
  
     model = LlavaForConditionalGeneration.from_pretrained(
             ckpt_path, torch_dtype="auto", device_map=device
