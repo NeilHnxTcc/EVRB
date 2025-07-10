@@ -1,17 +1,11 @@
 import argparse
 import torch
 import os
-import json
 from tqdm import tqdm
-import sys
+
 import os
 
-from PIL import Image
 import math
-import torch.distributed as dist
-
-from glob import glob
-
 
 
 
@@ -22,12 +16,12 @@ import numpy as np
 import torch.backends.cudnn as cudnn
 
 
-from PIL import Image
+from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
+from qwen_vl_utils import process_vision_info
 
-from transformers import LlavaForConditionalGeneration, AutoProcessor
 
+from utils.evrb_qwen_sample import evolve_my_sampling   
 
-from utils.evrb_llava_sample import evolve_my_sampling
 from utils.hyper_config import hyper_param
 
 
@@ -116,13 +110,30 @@ def eval_model(args):
     
     # set up gpu and logging
     
-    ##### here we need tokenizer model image_processor 
+    ##### here we need tokenizer model image_processor
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "image",
+                    "image": "/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/Qwen2.5-VL/my_example/424_1748933285.mp4",
+                },
+                {"type": "text", "text": "When did the cat walk away?"},
+            ],
+        }
+    ]
 
-    ckpt_path = "/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/EVRB_github/ckpts/llava-v1.5-7b-hf"
+    ckpt_path = "/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/Qwen2.5-VL/Qwen/Qwen2.5-VL-7B-Instruct"
+    if args.do_eos:
+        model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
+        ckpt_path, torch_dtype="auto", device_map=device, attn_implementation='eager',
+    ) 
+    else:    
+        model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
+            ckpt_path, torch_dtype="auto", device_map=device
+        )    
 
-    model = LlavaForConditionalGeneration.from_pretrained(
-        ckpt_path, torch_dtype="auto", device_map=device
-    )     
     model.eval()
 
     processor = AutoProcessor.from_pretrained(ckpt_path)
@@ -151,37 +162,39 @@ def eval_model(args):
                 questions = [qa.split('\t')[0] for qa in qa_list]
                 gt_answers = [qa.split('\t')[1] for qa in qa_list]
                 
-                raw_image = Image.open(image_file).convert("RGB")
                 for question, gt_answer in zip(questions, gt_answers):
-                    conversation = [
-                        {
-                            "role": "system",
-                            "content": [
-                                {"type": "text", "text": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions." }
-                            ]
-                        },
-                        {
 
-                        "role": "user",
-                        "content": [
-                            {"type": "text", "text": question},
-                            {"type": "image"},
-                            ],
-                        },
-                    ]    
+                    messages[0]['content'][0]["image"] = image_file
+                    messages[0]['content'][1]["text"] = question
+                    
+                    # Preparation for inference
+                    text = processor.apply_chat_template(
+                        messages, tokenize=False, add_generation_prompt=True
+                    )
 
-                    prompt = processor.apply_chat_template(conversation, add_generation_prompt=True)
-
-                    inputs = processor(images=raw_image, text=prompt, return_tensors='pt').to(0, torch.float16)
-
+                    image_inputs, video_inputs = process_vision_info(messages)
+                    inputs = processor(
+                        text=[text],
+                        images=image_inputs,
+                        videos=video_inputs,
+                        padding=True,
+                        return_tensors="pt",
+                    )
+                    inputs = inputs.to(model.device)
                     # Inference: Generation of the output
-                    output = model.generate(**inputs, max_new_tokens=1,  output_attentions=args.do_eos)
+                    generated_ids = model.generate(**inputs, max_new_tokens=10, do_sample=False, output_attentions=args.do_eos)
 
 
-                    start_idx = inputs['input_ids'].shape[-1]
-                    output_text = processor.decode(output[0][start_idx:], skip_special_tokens=True)
+                    generated_ids_trimmed = [
+                        out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+                    ]
+                    output_text = processor.batch_decode(
+                        generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+                    )           
 
-                    pred_answer = output_text
+                    # import pdb; pdb.set_trace()
+
+                    pred_answer = output_text[0]
                     # Image_Name + "\t" + Question + "\t" + Ground_Truth_Answer + "\t" + Your_Response + "\n"
                     with open(result_file, 'a') as f:
                         line = image_file.split('/')[-1] + "\t" + question + "\t" + gt_answer + "\t" + pred_answer + "\n"
@@ -195,7 +208,13 @@ if __name__ == "__main__":
 
     parser.add_argument("--gpu-id", type=int, default=0, help="specify the gpu to load the model.")
     # vision contrastive decoding
-
+    parser.add_argument("--noise-step", type=int, default=500)
+    parser.add_argument("--use-cd", action='store_true', default=False)
+    parser.add_argument("--use-icd", action='store_true', default=False)
+    parser.add_argument("--use-vcd", action='store_true', default=False)
+    parser.add_argument("--cd-alpha", type=float, default=1)
+    parser.add_argument("--cd-beta", type=float, default=0.1)
+    parser.add_argument("--sample-greedy", action='store_true', default=True)
     parser.add_argument(
         "--options",
         nargs="+",
@@ -206,6 +225,12 @@ if __name__ == "__main__":
     parser.add_argument("--data-path", type=str, default="/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/data/coco/val2014", help="data path")
     parser.add_argument("--batch-size", type=int, default=1, help="batch size")
     parser.add_argument("--num-workers", type=int, default=1, help="num workers")
+
+    # opera-beamsearch
+    parser.add_argument("--test-sample", type=int, default=500)
+    parser.add_argument("--beam", type=int, default=1)
+    parser.add_argument("--sample", type=bool, default=True)
+
 
 
     parser.add_argument("--data-folder", type=str, default='/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/hallucination/MME/MME_Benchmark_release_version/MME_Benchmark')
@@ -218,15 +243,15 @@ if __name__ == "__main__":
     parser.add_argument("--do-ct", action='store_true', default=False)
     parser.add_argument("--do-eos", action='store_true', default=False)
     args = parser.parse_args()
+    
+    if args.do_ct:
+        evolve_my_sampling()
 
     hyper_param.img_ent_thr = args.img_ent_thr
     hyper_param.pri_rec_thr = args.pri_rec_thr
     hyper_param.do_ct = args.do_ct
-    hyper_param.img_id = 32000
-    hyper_param.stop_id = 29889
-
-    if args.do_ct:
-        evolve_my_sampling()
+    hyper_param.img_id = 151655
+    hyper_param.stop_id = 13
 
     args = parser.parse_args()
     os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu_id)

@@ -25,8 +25,9 @@ from PIL import Image
 from transformers import LlavaForConditionalGeneration, AutoProcessor
 
 
-from utils.evrb_sample import evolve_my_sampling
-evolve_my_sampling()
+# from utils.evrb_sample import evolve_my_sampling
+from utils.evrb_llava_sample import evolve_my_sampling
+
 from utils.hyper_config import hyper_param
 
 
@@ -89,6 +90,8 @@ def parse_args():
     hyper_param.img_id = 32000
     hyper_param.stop_id = 29889
 
+    if args.do_ct:
+        evolve_my_sampling()
     return args
 
 
@@ -202,7 +205,7 @@ def main():
     ckpt_path = "/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/EVRB_github/ckpts/llava-v1.5-7b-hf"
  
     model = LlavaForConditionalGeneration.from_pretrained(
-            ckpt_path, torch_dtype="auto", device_map=device, attn_implementation='eager',
+            ckpt_path, torch_dtype="auto", device_map=device
     )  
 
     model.eval()
@@ -251,7 +254,7 @@ def main():
         pred_list, pred_list_s, label_list = [], [], []
         # for batch_id, data in tqdm(enumerate(pope_loader), total=len(pope_loader)):
 
-        for  data in tqdm(pope_loader):
+        for  data in pope_loader:
             image_path = data["image_path"][0]
             qu = data["query"][0]
             label = data["label"]
@@ -279,13 +282,14 @@ def main():
             
 
             # Inference: Generation of the output
-            output = model.generate(**inputs, max_new_tokens=1, output_attentions=args.do_eos)
+            output = model.generate(**inputs, max_new_tokens=3, output_attentions=args.do_eos)
 
             start_idx = inputs['input_ids'].shape[-1]
             output_text = processor.decode(output[0][start_idx:], skip_special_tokens=True)
             pred_list = recorder([output_text], pred_list) # 'No' pred_list append 0, else 1
             
-        print("[{}, {}]===============================================".format(args.scale_factor, args.num_attn_candidates))
+        print("===============================================")
+        print(data_names[idx])
         if len(pred_list) != 0:
             print_acc(pred_list, label_list, logger)
             

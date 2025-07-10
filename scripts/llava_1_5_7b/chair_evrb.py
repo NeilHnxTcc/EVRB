@@ -23,10 +23,9 @@ warnings.filterwarnings("ignore")
 from transformers import LlavaForConditionalGeneration, AutoProcessor
 
 
-from utils.evrb_sample import evolve_my_sampling
-evolve_my_sampling()
+# from utils.evrb_sample import evolve_my_sampling
+from utils.evrb_llava_sample import evolve_my_sampling
 from utils.evrb_llava import use_my_llava
-use_my_llava()
 
 from utils.hyper_config import hyper_param
 
@@ -72,7 +71,6 @@ parser.add_argument("--num-workers", type=int, default=1, help="num workers")
 
 
 parser.add_argument("--test-sample", type=int, default=500)
-parser.add_argument("--threshold", type=int, default=15)
 parser.add_argument("--save-name", type=str, required=True)
 parser.add_argument("--save-folder", type=str, required=True)
 
@@ -84,7 +82,11 @@ parser.add_argument("--do-eos", action='store_true', default=False)
 parser.add_argument('---eos-k', type=float, default=1.5)
 parser.add_argument('--vv_thr', type=float, default=0.05)
 args = parser.parse_args()
-
+args = parser.parse_args()
+if args.do_ct:
+    evolve_my_sampling()
+if args.do_eos:
+    use_my_llava()
 hyper_param.img_ent_thr = args.img_ent_thr
 hyper_param.pri_rec_thr = args.pri_rec_thr
 hyper_param.do_ct = args.do_ct
@@ -103,7 +105,6 @@ setup_seeds()
 #             Model Initialization
 # ========================================
 print('Initializing Model')
-
 
 
 ckpt_path = "/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/EVRB_github/ckpts/llava-v1.5-7b-hf"
@@ -207,6 +208,7 @@ for img_id in tqdm(range(len(img_files))):
             output  = model.generate(
                 **inputs,
                 max_new_tokens = 512,
+                attn_implementation="eager",
             )
     start_idx = inputs['input_ids'].shape[-1]
     output_text = processor.decode(output[0][start_idx:], skip_special_tokens=True)

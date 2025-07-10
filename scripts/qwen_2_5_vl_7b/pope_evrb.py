@@ -25,9 +25,9 @@ from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
 from qwen_vl_utils import process_vision_info
 
 
-from my_sample_qwen import evolve_my_sampling   
-from my_qwen import evolve_my_qwen 
-from hyper_config import hyper_param
+from utils.evrb_qwen_sample import evolve_my_sampling   
+
+from utils.hyper_config import hyper_param
 
 
 POPE_PATH = {
@@ -119,11 +119,14 @@ def parse_args():
 
 
     # my args
-    parser.add_argument("--img-ent-thr", type=float, default=6.5)
+    parser.add_argument("--img-ent-thr", type=float, default=7.48)
     parser.add_argument("--pri-rec-thr", type=float, default=0.1)
     parser.add_argument("--do-ct", action='store_true', default=False)
     parser.add_argument("--do-eos", action='store_true', default=False)
     args = parser.parse_args()
+
+    if args.do_ct:
+        evolve_my_sampling()
 
     hyper_param.img_ent_thr = args.img_ent_thr
     hyper_param.pri_rec_thr = args.pri_rec_thr
@@ -134,7 +137,7 @@ def parse_args():
 
 
 
-evolve_my_sampling()
+
 
 
 def setup_seeds():
@@ -360,7 +363,7 @@ def main():
             # import pdb; pdb.set_trace()
         # # 5638 13401 21879 29045 36276 36106 29950 4129 0 0 0 0
         
-        print("[{}, {}]===============================================".format(args.scale_factor, args.num_attn_candidates))
+        print("===============================================")
         print(data_names[idx])
         if len(pred_list) != 0:
             print_acc(pred_list, label_list, logger)

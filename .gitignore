@@ -2,4 +2,7 @@ ckpts/
 log/
 sh/
 transformers/
+outputs/
+results/
+utils/others/
 *.pkl

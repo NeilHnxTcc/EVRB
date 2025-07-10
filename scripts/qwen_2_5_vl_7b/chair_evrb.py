@@ -22,10 +22,9 @@ from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
 from qwen_vl_utils import process_vision_info
 
 
-from utils.evrb_sample import evolve_my_sampling
-evolve_my_sampling()
+from utils.evrb_qwen_sample import evolve_my_sampling
 from utils.evrb_qwen import use_my_qwen
-use_my_qwen()
+
 
 from utils.hyper_config import hyper_param
 
@@ -67,14 +66,17 @@ parser.add_argument("--save-name", type=str, required=True)
 parser.add_argument("--save-folder", type=str, required=True)
 
 # my args
-parser.add_argument("--img-ent-thr", type=float, default=6.5)
+parser.add_argument("--img-ent-thr", type=float, default=7.48)
 parser.add_argument("--pri-rec-thr", type=float, default=0.9)
 parser.add_argument("--do-ct", action='store_true', default=False)
 parser.add_argument("--do-eos", action='store_true', default=False)
 parser.add_argument('---eos-k', type=float, default=1.5)
 parser.add_argument('--vv_thr', type=float, default=0.05)
 args = parser.parse_args()
-
+if args.do_ct:
+    evolve_my_sampling()
+if args.do_eos:
+    use_my_qwen()
 hyper_param.img_ent_thr = args.img_ent_thr
 hyper_param.pri_rec_thr = args.pri_rec_thr
 hyper_param.do_ct = args.do_ct
