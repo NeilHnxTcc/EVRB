@@ -7,6 +7,7 @@ results/
 utils/others/
 *.pkl
 
-vendor/
+vendor/*
+!vendor/
 !vendor/transformers
 !vendor/tokenizers
