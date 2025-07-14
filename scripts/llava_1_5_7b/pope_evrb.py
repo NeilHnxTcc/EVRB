@@ -1,3 +1,10 @@
+
+#-------
+import sys
+sys.path.insert(0, "vendor")
+sys.path.insert(0,"vendor/transformers/src")
+#-------
+
 import argparse
 import os
 import random
@@ -10,30 +17,49 @@ from datetime import datetime
 
 
 
-from utils.pope_loader_evrb import POPEDataSet
+
+from utils.pope_loader_llava import POPEDataSet
 
 
-import logging
+from utils.evrb_llava_sample import evolve_my_sampling
+from utils.evrb_llava import LLaVa
+from omegaconf import OmegaConf
+from utils.hyper_config import hyper_param
+
 from pathlib import Path
 import warnings
+
+
+
+
+
+
 warnings.filterwarnings("ignore")
 time = datetime.now().strftime('%m-%d-%H:%M')
 print(time)
 
-from PIL import Image
-
-from transformers import LlavaForConditionalGeneration, AutoProcessor
 
 
-# from utils.evrb_sample import evolve_my_sampling
-from utils.evrb_llava_sample import evolve_my_sampling
 
-from utils.hyper_config import hyper_param
+def build_model_config(config, default_config = './utils/llava/config/llava-1.5_vicuna7b.yaml'):
+    model_config_path = default_config
+    model_config = OmegaConf.create()
+    model_config = OmegaConf.merge(
+        model_config,
+        OmegaConf.load(model_config_path),
+        {"model": config["model"]},
+    )
+    return model_config
+
+def build_preprocessor_config(default_config = './utils/llava/config/llava-1.5_vicuna7b.yaml'):
+    config = OmegaConf.load(default_config)
+    return config['preprocess']
 
 
+from utils.llava.clip_processors import ClipImageEvalProcessor
+ 
 
 POPE_PATH = {
-    "426": "pope/coco/426.json",
     "coco_random": "pope/coco/coco_pope_random.json",
     "coco_popular": "pope/coco/coco_pope_popular.json",
     "coco_adversarial": "pope/coco/coco_pope_adversarial.json",
@@ -45,36 +71,20 @@ POPE_PATH = {
     "aokvqa_adversarial": "pope/aokvqa/aokvqa_pope_seem_adversarial.json",
 }
 
-pope_path = {
-    "coco_random": "pope/coco/coco_pope_random.json",
-    "coco_popular": "pope/coco/coco_pope_popular.json",
-    "coco_adversarial": "pope/coco/coco_pope_adversarial.json",
-    "gpa_random": "pope/gpa/gqa_pope_seem_random.json",
-    "gpa_popular": "pope/gpa/gqa_pope_seem_popular.json",
-    "gpa_adversarial": "pope/gpa/gqa_pope_seem_adversarial.json",
-    "aokvqa_random": "pope/aokvqa/aokvqa_pope_seem_random.json",
-    "aokvqa_popular": "pope/aokvqa/aokvqa_pope_seem_popular.json",
-    "aokvqa_adversarial": "pope/aokvqa/aokvqa_pope_seem_adversarial.json",
-}
-
-INSTRUCTION_TEMPLATE = {
-    "minigpt4": "###Human: <Img><ImageHere></Img> <question> ###Assistant:",
-    "instructblip": "<ImageHere><question>",
-    "lrv_instruct": "###Human: <Img><ImageHere></Img> <question> ###Assistant:",
-    "shikra": "USER: <im_start><ImageHere><im_end> <question> ASSISTANT:",
-    "llava-1.5": "USER: <ImageHere> <question> ASSISTANT:"
-}
-
+        
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="POPE-Adv evaluation on LVLMs.")
-    parser.add_argument("--model", type=str, default="llava-1.5", help="model")
-    parser.add_argument("--pope-type", type=str, default="coco_adversarial", help="model")
-    parser.add_argument("--gpu-id", type=int, default=2, help="specify the gpu to load the model.")
+    parser = argparse.ArgumentParser(description="POPE evaluation on LVLMs.")
+    parser.add_argument("--gpu-id", type=str,  default='0', help="specify the GPUs to load the model.")
     parser.add_argument("--data-path", type=str, default="../datasets/coco/val2014", help="data path")
     parser.add_argument("--gqa-data-path", type=str, default="../datasets/gqa/images", help="data path")
+    parser.add_argument("--cfg-path", type=str, default="./utils/llava/config/llava-1.5_eval.yaml", help="cfg path")
     parser.add_argument("--batch-size", type=int, default=1, help="batch size")
     parser.add_argument("--num_workers", type=int, default=1, help="num workers")
+    parser.add_argument("--answers-file", type=str, default="")
+
+    parser.add_argument("--sample-greedy", action='store_true',  default=True)
+    parser.add_argument("--sample", action='store_true',  default=True)
     parser.add_argument("--options")
 
     # my args
@@ -82,18 +92,18 @@ def parse_args():
     parser.add_argument("--pri-rec-thr", type=float, default=0.1)
     parser.add_argument("--do-ct", action='store_true', default=False)
     parser.add_argument("--do-eos", action='store_true', default=False)
+    
     args = parser.parse_args()
 
     hyper_param.img_ent_thr = args.img_ent_thr
     hyper_param.pri_rec_thr = args.pri_rec_thr
     hyper_param.do_ct = args.do_ct
-    hyper_param.img_id = 32000
-    hyper_param.stop_id = 29889
+    hyper_param.do_eos = args.do_eos
 
     if args.do_ct:
         evolve_my_sampling()
-    return args
 
+    return args
 
 
 
@@ -108,7 +118,7 @@ def setup_seeds():
     cudnn.deterministic = True
 
 
-def print_acc(pred_list, label_list, logger):
+def print_acc(pred_list, label_list):
     pos = 1
     neg = 0
     yes_ratio = pred_list.count(1) / len(pred_list)
@@ -137,11 +147,7 @@ def print_acc(pred_list, label_list, logger):
     print('Recall: {}'.format(recall))
     print('F1 score: {}'.format(f1))
     print('Yes ratio: {}'.format(yes_ratio))
-    logger.info(('Accuracy: {}'.format(acc)))
-    logger.info(('Precision: {}'.format(precision)))
-    logger.info(('Recall: {}'.format(recall)))
-    logger.info(('F1 score: {}'.format(f1)))
-    logger.info(('Yes ratio: {}'.format(yes_ratio)))
+
 
 
 def recorder(out, pred_list):
@@ -159,142 +165,98 @@ def recorder(out, pred_list):
     return pred_list
 
 
-entropy_st =  [0 for i in range(18)]
-def statistic(dict):
-    global entropy_st
-    value = dict['value']
-    count = dict['count']
-    for i,j in zip(value, count):
-        entropy_st[i] += j
-    return 
-
 
 def main():
 
     args = parse_args()
-    def log_string(str):
-        logger.info(str)
-        print(str)
-    exp_dir = Path(os.path.join('results', 'log'))
-    exp_dir.mkdir(exist_ok=True)
-    log_dir = exp_dir.joinpath(args.pope_type)
-    log_dir.mkdir(exist_ok=True)
-    logger = logging.getLogger(args.model)
-    logger.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    file_handler = logging.FileHandler('%s/log.txt' % log_dir)
-    file_handler.setLevel(logging.INFO)
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-    log_string('PARAMETER ...')
-    log_string(args)
 
-
-    # print(args)
     os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu_id)
 
     setup_seeds()
     device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
 
+
     # ========================================
     #             Model Initialization
     # ========================================
+
+
     print('Initializing Model')
 
+    config =  OmegaConf.load(args.cfg_path)
+    model_config = build_model_config(config)
+    model_config.device_8bit = args.gpu_id
 
-    ckpt_path = "./ckpts/llava-v1.5-7b-hf"
- 
-    model = LlavaForConditionalGeneration.from_pretrained(
-            ckpt_path, torch_dtype="auto", device_map=device
-    )  
-
+    model = LLaVa.from_config(model_config['model']).to(device)
     model.eval()
 
-    processor = AutoProcessor.from_pretrained(ckpt_path)
+    preprocess_config = build_preprocessor_config()
 
+    vis_processors = dict()
+    vis_proc_cfg = preprocess_config.get("vis_processor")
+    vis_eval_cfg = vis_proc_cfg.get("eval")['proc_type']
+    vis_processors["eval"] = ClipImageEvalProcessor(vis_eval_cfg)
 
+    # vis_processors.do_normalize = False
+    print(vis_processors["eval"].transform)
+    print("Done!")
+    # load pope data
 
-
-
-    # vis_processors, txt_processors = load_preprocess(cfg.get_config().preprocess)
-    # # vis_processors.do_normalize = False
-    # print(vis_processors["eval"].transform)
-    # print("Done!")
-
-    # 获取所有的数据
-    data_loaders = []
-    for dp in pope_path.values():
-        if 'gqa'in dp:
+    for pope_name, pope_path in POPE_PATH.items():
+        if 'gpa'in pope_name:
             data_path = args.gqa_data_path
         else:
             data_path = args.data_path
-        # load pope data
+
         pope_dataset = POPEDataSet(
-            pope_path=dp, 
+            pope_path= pope_path, 
             data_path=data_path, 
+            trans=vis_processors["eval"]
         )
-        data_loaders.append(torch.utils.data.DataLoader(
+        pope_loader = torch.utils.data.DataLoader(
             pope_dataset, 
             batch_size=args.batch_size, 
             shuffle=False, 
             num_workers=args.num_workers,
             drop_last=False
-        ) )     
-    data_names = [n for n in pope_path.keys()]
+        )
 
-    print ("load data finished")
-    
-    # hyper_param = {
-    # 'img_ent_thr' : args.img_ent_thr,
-    # 'pri_rec_thr' : args.pri_rec_thr
-    # }
+        print ("load data finished")
 
-    for idx, pope_loader in enumerate(data_loaders):
-        print("Start eval...")        
-        pred_list, pred_list_s, label_list = [], [], []
-        # for batch_id, data in tqdm(enumerate(pope_loader), total=len(pope_loader)):
 
-        for  data in pope_loader:
-            image_path = data["image_path"][0]
-            qu = data["query"][0]
+        print("Start eval...")
+        pred_list, label_list = [], []
+        
+        bar = pope_loader
+        # bar = pope_loader
+        for idx, data in enumerate(bar): 
+            image = data["image"]
+            qu = data["query"]
             label = data["label"]
             label_list = label_list + list(label)
-            raw_image = Image.open(image_path).convert("RGB")
-            conversation = [
-                {
-                    "role": "system",
-                    "content": [
-                        {"type": "text", "text": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions." }
-                    ]
-                },
-                {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": qu},
-                    {"type": "image"},
-                    ],
-                },
-            ]   
 
-            prompt = processor.apply_chat_template(conversation, add_generation_prompt=True)
-            inputs = processor(images=raw_image, text=prompt, return_tensors='pt').to(0, torch.float16)
+            template = "USER: <ImageHere> <question> ASSISTANT:"
+            qu = [template.replace("<question>", q) for q in qu]
 
-            
+            image = image.to(device)
+            label = torch.Tensor(label).to(device)
 
-            # Inference: Generation of the output
-            output = model.generate(**inputs, max_new_tokens=3, output_attentions=args.do_eos)
+            with torch.inference_mode():
+                with torch.no_grad():
+                    out = model.generate(
+                        prompt = qu,
+                        image = image.half(),
+                        use_nucleus_sampling=args.sample, # True,
+                        max_new_tokens=1,
+                        use_cache=True,
+                        sample_greedy = args.sample_greedy, # true
+                        num_beams=1,
+                    )
+                    pred_list = recorder(out, pred_list) # 'No' pred_list append 0, else 1
 
-            start_idx = inputs['input_ids'].shape[-1]
-            output_text = processor.decode(output[0][start_idx:], skip_special_tokens=True)
-            pred_list = recorder([output_text], pred_list) # 'No' pred_list append 0, else 1
-            
         print("===============================================")
-        print(data_names[idx])
-        if len(pred_list) != 0:
-            print_acc(pred_list, label_list, logger)
-            
-        if len(pred_list_s) != 0:
-            print_acc(pred_list_s, label_list, logger)
+        print(pope_name)
+        print_acc(pred_list, label_list)
 
 
 

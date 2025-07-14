@@ -30,8 +30,9 @@ from utils.evrb_qwen_sample import evolve_my_sampling
 from utils.hyper_config import hyper_param
 
 
+
+
 POPE_PATH = {
-    "426": "pope/coco/426.json",
     "coco_random": "pope/coco/coco_pope_random.json",
     "coco_popular": "pope/coco/coco_pope_popular.json",
     "coco_adversarial": "pope/coco/coco_pope_adversarial.json",
@@ -43,78 +44,20 @@ POPE_PATH = {
     "aokvqa_adversarial": "pope/aokvqa/aokvqa_pope_seem_adversarial.json",
 }
 
-pope_path = {
-    "coco_random": "pope/coco/coco_pope_random.json",
-    "coco_popular": "pope/coco/coco_pope_popular.json",
-    "coco_adversarial": "pope/coco/coco_pope_adversarial.json",
-    "gpa_random": "pope/gpa/gqa_pope_seem_random.json",
-    "gpa_popular": "pope/gpa/gqa_pope_seem_popular.json",
-    "gpa_adversarial": "pope/gpa/gqa_pope_seem_adversarial.json",
-    "aokvqa_random": "pope/aokvqa/aokvqa_pope_seem_random.json",
-    "aokvqa_popular": "pope/aokvqa/aokvqa_pope_seem_popular.json",
-    "aokvqa_adversarial": "pope/aokvqa/aokvqa_pope_seem_adversarial.json",
-}
 
-INSTRUCTION_TEMPLATE = {
-    "minigpt4": "###Human: <Img><ImageHere></Img> <question> ###Assistant:",
-    "instructblip": "<ImageHere><question>",
-    "lrv_instruct": "###Human: <Img><ImageHere></Img> <question> ###Assistant:",
-    "shikra": "USER: <im_start><ImageHere><im_end> <question> ASSISTANT:",
-    "llava-1.5": "USER: <ImageHere> <question> ASSISTANT:"
-}
-
-import matplotlib.pyplot as plt
-
-def draw_the_logit_image(data,save_path):
-    fig, ax = plt.subplots(1,3, figsize=(15,5))
-    
-    title = ['origin logits', 'ct logits', 'final logits']
-    for i in range(3):
-        ax[i].bar(data[-1],data[i+1])
-        ax[i].set_title(title[i])
-        
-    fig.suptitle(save_path.split('/')[-1])
-    plt.tight_layout()
-    plt.savefig(save_path, format='jpg')
 
 def parse_args():
     parser = argparse.ArgumentParser(description="POPE-Adv evaluation on LVLMs.")
-    parser.add_argument("--model", type=str, default="llava-1.5", help="model")
-    parser.add_argument("--pope-type", type=str, default="coco_adversarial", help="model")
-    parser.add_argument("--gpu-id", type=int, default=2, help="specify the gpu to load the model.")
+    parser.add_argument("--gpu-id", type=str,  default='0', help="specify the GPUs to load the model.")
     parser.add_argument("--data-path", type=str, default="../datasets/coco/val2014", help="data path")
-    parser.add_argument("--gqa-data-path", type=str, default="../datasets/gqa/images", help="data path")
+    parser.add_argument("--ckpt-path", type=str, default="../Qwen2.5-VL/Qwen/Qwen2.5-VL-7B-Instruct", help="ckpt path")
     parser.add_argument("--batch-size", type=int, default=1, help="batch size")
     parser.add_argument("--num_workers", type=int, default=1, help="num workers")
     parser.add_argument("--answers-file", type=str, default="")
-    # vision contrastive decoding
-    parser.add_argument("--noise_step", type=int, default=500)
-    parser.add_argument("--use-cd", action='store_true', default=False)
-    parser.add_argument("--use-icd", action='store_true', default=False)
-    parser.add_argument("--use-vcd", action='store_true', default=False)
-    parser.add_argument("--sample-greedy", action='store_true',  default=False)
-    # fast token merging
-    parser.add_argument("--use-fast-v", action='store_true', default=False)
-    parser.add_argument("--fast-v-inplace", default=False)
-    parser.add_argument("--fast-v-attention-rank", type=int, default=100)
-    parser.add_argument("--fast-v-attention-rank-add", type=int, default=100)
-    parser.add_argument("--fast-v-agg-layer", type=int, default=2)
-    # auto-generation
-    parser.add_argument("--fast-v-sys-length", default=None, type=int, help='the length of system prompt')
-    parser.add_argument("--fast-v-image-token-length", default=None, type=int, help='the length of image token')
-    # opera-beamsearch 
-    parser.add_argument("--beam", type=int, default=1)
-    parser.add_argument("--sample", action='store_true',  default=True)
-    parser.add_argument("--scale-factor", type=float, default=50)
-    parser.add_argument("--threshold", type=int, default=15)
-    parser.add_argument("--num_attn-candidates", type=int, default=5)
-    parser.add_argument("--penalty-weights", type=float, default=1.0)
-    parser.add_argument("--opera", action='store_true',  default=False)
 
-    parser.add_argument("--cd-alpha", type=float, default=1)
-    parser.add_argument("--cd-beta", type=float, default=0.1)
-    parser.add_argument("--vv-start-layer", type=int, default=0)
-    parser.add_argument("--vv-end-layer",type=int, default=32)
+    parser.add_argument("--sample-greedy", action='store_true',  default=True)
+    parser.add_argument("--sample", action='store_true',  default=True)
+
     parser.add_argument("--options")
 
 
@@ -151,7 +94,7 @@ def setup_seeds():
     cudnn.deterministic = True
 
 
-def print_acc(pred_list, label_list, logger):
+def print_acc(pred_list, label_list):
     pos = 1
     neg = 0
     yes_ratio = pred_list.count(1) / len(pred_list)
@@ -180,11 +123,6 @@ def print_acc(pred_list, label_list, logger):
     print('Recall: {}'.format(recall))
     print('F1 score: {}'.format(f1))
     print('Yes ratio: {}'.format(yes_ratio))
-    logger.info(('Accuracy: {}'.format(acc)))
-    logger.info(('Precision: {}'.format(precision)))
-    logger.info(('Recall: {}'.format(recall)))
-    logger.info(('F1 score: {}'.format(f1)))
-    logger.info(('Yes ratio: {}'.format(yes_ratio)))
 
 
 def recorder(out, pred_list):
@@ -228,22 +166,6 @@ def statistic(dict):
 def main():
 
     args = parse_args()
-    def log_string(str):
-        logger.info(str)
-        print(str)
-    exp_dir = Path(os.path.join('results', 'log'))
-    exp_dir.mkdir(exist_ok=True)
-    log_dir = exp_dir.joinpath(args.pope_type)
-    log_dir.mkdir(exist_ok=True)
-    logger = logging.getLogger(args.model)
-    logger.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    file_handler = logging.FileHandler('%s/log.txt' % log_dir)
-    file_handler.setLevel(logging.INFO)
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-    log_string('PARAMETER ...')
-    log_string(args)
 
 
     # print(args)
@@ -258,7 +180,7 @@ def main():
     print('Initializing Model')
 
 
-    ckpt_path = "../Qwen2.5-VL/Qwen/Qwen2.5-VL-7B-Instruct"
+    ckpt_path = args.ckpt_path
     if args.do_eos:
         model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
         ckpt_path, torch_dtype="auto", device_map=device, attn_implementation='eager',
@@ -283,7 +205,7 @@ def main():
 
     # 获取所有的数据
     data_loaders = []
-    for dp in pope_path.values():
+    for dp in POPE_PATH.values():
         if 'gqa'in dp:
             data_path = args.gqa_data_path
         else:
@@ -300,7 +222,7 @@ def main():
             num_workers=args.num_workers,
             drop_last=False
         ) )     
-    data_names = [n for n in pope_path.keys()]
+    data_names = [n for n in POPE_PATH.keys()]
 
     print ("load data finished")
     
@@ -366,10 +288,10 @@ def main():
         print("===============================================")
         print(data_names[idx])
         if len(pred_list) != 0:
-            print_acc(pred_list, label_list, logger)
+            print_acc(pred_list, label_list)
             
         if len(pred_list_s) != 0:
-            print_acc(pred_list_s, label_list, logger)
+            print_acc(pred_list_s, label_list)
 
 
 

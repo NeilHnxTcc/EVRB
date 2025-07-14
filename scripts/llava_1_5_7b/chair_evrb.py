@@ -1,3 +1,9 @@
+
+#-------
+import sys
+sys.path.insert(0, "vendor")
+sys.path.insert(0,"vendor/transformers/src")
+#-------
 import argparse
 import os
 import random
@@ -7,29 +13,23 @@ import torch
 import torch.backends.cudnn as cudnn
 from tqdm import tqdm
 
-
-
+from torchvision import transforms
 
 
 from PIL import Image
+
 from datetime import datetime
+
 
 import json
 import warnings
 warnings.filterwarnings("ignore")
 
-
-
-from transformers import LlavaForConditionalGeneration, AutoProcessor
-
-
-# from utils.evrb_sample import evolve_my_sampling
+from utils.evrb_llava import LLaVa
 from utils.evrb_llava_sample import evolve_my_sampling
 from utils.evrb_llava import use_my_llava
-
 from utils.hyper_config import hyper_param
-
-
+from omegaconf import OmegaConf
 time = datetime.now().strftime('%m-%d-%H:%M')
 print(time)
 
@@ -38,14 +38,29 @@ import os
 os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
 
 
-MODEL_EVAL_CONFIG_PATH = {
-    "llava-1.5": "eval_configs/llava-1.5_eval.yaml",
-    "llava-1.5-13b": "eval_configs/llava-1.5_eval_13b.yaml",
-}
+
+
+def build_model_config(config, default_config = './utils/llava/config/llava-1.5_vicuna7b.yaml'):
+    model_config_path = default_config
+    model_config = OmegaConf.create()
+    model_config = OmegaConf.merge(
+        model_config,
+        OmegaConf.load(model_config_path),
+        {"model": config["model"]},
+    )
+    return model_config
+
+def build_preprocessor_config(default_config = './utils/llava/config/llava-1.5_vicuna7b.yaml'):
+    config = OmegaConf.load(default_config)
+    return config['preprocess']
+
+
+from utils.llava.clip_processors import ClipImageEvalProcessor
+ 
 
 
 def setup_seeds():
-    seed =  42
+    seed = 42
 
     random.seed(seed)
     np.random.seed(seed)
@@ -55,24 +70,24 @@ def setup_seeds():
     cudnn.deterministic = True
 
 
-parser = argparse.ArgumentParser(description="POPE-Adv evaluation on LVLMs.")
-parser.add_argument("--gpu-id", type=int, default=2, help="specify the gpu to load the model.")
-# vision contrastive decoding
-parser.add_argument(
-    "--options",
-    nargs="+",
-    help="override some settings in the used config, the key-value pair "
-    "in xxx=yyy format will be merged into config file (deprecate), "
-    "change to --cfg-options instead.",
-)
+
+parser = argparse.ArgumentParser(description="CHAIR evaluation on LVLMs.")
+parser.add_argument("--model", type=str, default="llava-1.5", help="model")
+parser.add_argument("--gpu-id", type=str,  default='0', help="specify the GPUs to load the model.")
 parser.add_argument("--data-path", type=str, default="../datasets/coco/val2014", help="data path")
+parser.add_argument("--cfg-path", type=str, default="./utils/llava/config/llava-1.5_eval.yaml", help="cfg path")
 parser.add_argument("--batch-size", type=int, default=1, help="batch size")
-parser.add_argument("--num-workers", type=int, default=1, help="num workers")
+parser.add_argument("--num_workers", type=int, default=1, help="num workers")
+parser.add_argument("--answers-file", type=str, default="")
+
+parser.add_argument("--sample-greedy", action='store_true',  default=True)
+parser.add_argument("--sample", action='store_true',  default=True)
+parser.add_argument("--options")
 
 
 parser.add_argument("--test-sample", type=int, default=500)
-parser.add_argument("--save-name", type=str, required=True)
-parser.add_argument("--save-folder", type=str, required=True)
+parser.add_argument("--save-name", type=str, required=True) 
+parser.add_argument("--save-folder", type=str, default='outputs/')
 
 # my args
 parser.add_argument("--img-ent-thr", type=float, default=7.48)
@@ -82,57 +97,63 @@ parser.add_argument("--do-eos", action='store_true', default=False)
 parser.add_argument('---eos-k', type=float, default=1.5)
 parser.add_argument('--vv_thr', type=float, default=0.05)
 args = parser.parse_args()
-args = parser.parse_args()
 if args.do_ct:
     evolve_my_sampling()
 if args.do_eos:
     use_my_llava()
+
 hyper_param.img_ent_thr = args.img_ent_thr
 hyper_param.pri_rec_thr = args.pri_rec_thr
 hyper_param.do_ct = args.do_ct
 hyper_param.do_eos = args.do_eos
 hyper_param.eos_k = args.eos_k
 hyper_param.vv_thr = args.vv_thr
-hyper_param.img_id = 32000
-hyper_param.stop_id = 29889
-os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu_id)
-device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
-setup_seeds()
 
+args = parser.parse_args()
+
+os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu_id)
+
+setup_seeds()
+device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
 
 
 # ========================================
 #             Model Initialization
 # ========================================
+
+
 print('Initializing Model')
 
+config =  OmegaConf.load(args.cfg_path)
+model_config = build_model_config(config)
+model_config.device_8bit = args.gpu_id
 
-ckpt_path = "./ckpts/llava-v1.5-7b-hf"
+model = LLaVa.from_config(model_config['model']).to(device)
+model.eval()
 
-model = LlavaForConditionalGeneration.from_pretrained(ckpt_path, torch_dtype="auto", device_map=device,) 
+preprocess_config = build_preprocessor_config()
 
-  
+vis_processors = dict()
+vis_proc_cfg = preprocess_config.get("vis_processor")
+vis_eval_cfg = vis_proc_cfg.get("eval")['proc_type']
+vis_processors["eval"] = ClipImageEvalProcessor(vis_eval_cfg)
 
-
-
-
-
+# vis_processors.do_normalize = False
+print(vis_processors["eval"].transform)
 print("Done!")
 
 
-processor = AutoProcessor.from_pretrained(ckpt_path)
 
 
-
-# mean = (0.48145466, 0.4578275, 0.40821073)
-# std = (0.26862954, 0.26130258, 0.27577711)
-# norm = transforms.Normalize(mean, std)
+mean = (0.48145466, 0.4578275, 0.40821073)
+std = (0.26862954, 0.26130258, 0.27577711)
+norm = transforms.Normalize(mean, std)
 
 
 img_files = os.listdir(args.data_path)
 random.shuffle(img_files)
 
-with open('../datasets/coco/annotations/instances_val2014.json', 'r') as f:
+with open('/mnt/gemininjceph2/geminicephfs/wx-mm-spr-xxxx/neilnxhu/datasets/coco/annotations/instances_val2014.json', 'r') as f:
     lines = f.readlines()
 coco_anns = json.loads(lines[0])
 
@@ -155,8 +176,6 @@ base_dir  = args.save_folder
 if not os.path.exists(base_dir):
     os.makedirs(base_dir)
 
-
-    
     
 save_path = os.path.join(base_dir, 'llava-{}-{}.jsonl'.format(args.test_sample, args.save_name))
 if os.path.exists(save_path):
@@ -177,68 +196,30 @@ for img_id in tqdm(range(len(img_files))):
 
     image_path = args.data_path + "/" + img_file
     raw_image = Image.open(image_path).convert("RGB")
+    image = vis_processors["eval"](raw_image).unsqueeze(0)
+    image = image.to(device)
 
     qu = "Please describe this image in detail."
-
-    conversation = [
-        {
-            "role": "system",
-            "content": [
-                {"type": "text", "text": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions." }
-            ]
-        },
-
-        {
-        "role": "user",
-        "content": [
-            {"type": "text", "text": qu},
-            {"type": "image"},
-            ],
-        },
-    ]
-
-    prompt = processor.apply_chat_template(conversation, add_generation_prompt=True)
-
-    inputs = processor(images=raw_image, text=prompt, return_tensors='pt').to(0, torch.float16)
-
+    template = "USER: <ImageHere> <question> ASSISTANT:"
+    qu = template.replace("<question>", qu)
     
+
+
     with torch.inference_mode():
         with torch.no_grad():
-            output  = model.generate(
-                **inputs,
-                max_new_tokens = 512,
-                attn_implementation="eager",
+            out = model.generate(
+                prompt = qu,
+                image = image.half(),
+                use_nucleus_sampling=args.sample, # True,
+                max_new_tokens=512,
+                use_cache=True,
+                sample_greedy = args.sample_greedy, # true
+                num_beams=1,
             )
-    start_idx = inputs['input_ids'].shape[-1]
-    output_text = processor.decode(output[0][start_idx:], skip_special_tokens=True)
-    img_save["caption"] = output_text
-    
-
+    img_save["caption"] = out[0]
     with open(save_path, "a") as f:
                 json.dump(img_save, f)
                 f.write('\n')
                
                 
                 
-                
-    # # dump metric file
-    # if args.use_fast_v == True and args.use_cd == True:
-    #     with open(os.path.join(base_dir, 'top_important_ours-{}samples-cd-layer{}-token{}-time{}-greedy.jsonl'.format(args.test_sample, args.fast_v_agg_layer, args.fast_v_attention_rank, time)), "a") as f:
-    #         json.dump(img_save, f)
-    #         f.write('\n')
-    # elif args.use_vcd == True:
-    #     with open(os.path.join(base_dir, 'degraded_ours-{}samples-vcd-sampling.jsonl'.format(args.test_sample)), "a") as f:
-    #         json.dump(img_save, f)
-    #         f.write('\n')
-    # elif args.use_icd == True:
-    #     with open(os.path.join(base_dir, 'degraded_ours-{}samples-icd-sampling.jsonl'.format(args.test_sample)), "a") as f:
-    #         json.dump(img_save, f)
-    #         f.write('\n')
-    # else:
-    #     with open(os.path.join(base_dir, 'ours-{}samples-opera.jsonl'.format(args.test_sample)), "a") as f:
-    #         json.dump(img_save, f)
-    #         f.write('\n')
-
-    
-
-

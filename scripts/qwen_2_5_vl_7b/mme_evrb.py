@@ -207,13 +207,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--gpu-id", type=int, default=0, help="specify the gpu to load the model.")
-    # vision contrastive decoding
-    parser.add_argument("--noise-step", type=int, default=500)
-    parser.add_argument("--use-cd", action='store_true', default=False)
-    parser.add_argument("--use-icd", action='store_true', default=False)
-    parser.add_argument("--use-vcd", action='store_true', default=False)
-    parser.add_argument("--cd-alpha", type=float, default=1)
-    parser.add_argument("--cd-beta", type=float, default=0.1)
     parser.add_argument("--sample-greedy", action='store_true', default=True)
     parser.add_argument(
         "--options",
@@ -226,9 +219,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch-size", type=int, default=1, help="batch size")
     parser.add_argument("--num-workers", type=int, default=1, help="num workers")
 
-    # opera-beamsearch
-    parser.add_argument("--test-sample", type=int, default=500)
-    parser.add_argument("--beam", type=int, default=1)
+
     parser.add_argument("--sample", type=bool, default=True)
 
 
