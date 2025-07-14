@@ -6,3 +6,7 @@ outputs/
 results/
 utils/others/
 *.pkl
+
+vendor/
+!vendor/transformers
+!vendor/tokenizers
