@@ -5,7 +5,6 @@
 
 <p align="center">
     <img src="https://github.com/NeilHnxTcc/EVRB/blob/main/imgs/evrb.png" width="90%"></a> <br>
-    <b>Diagram of EVRB.</b>
 </p>
 
 
@@ -74,7 +73,7 @@ nohup python scripts/qwen_2_5_vl_7b/mme_evrb.py  --gpu-id 6  --save-folder ./out
 ```
 
 
-Additionally, running the upper codes, POPE can derectly output the evaluation metrics, while CHAIR and MME output the generated texts. We need to run addtional code to get the result:
+Additionally, running the upper codes, POPE can directly output the evaluation metrics, while CHAIR and MME output the generated texts. We need to run additional code to get the result:
 
 
 # chair
@@ -86,7 +85,7 @@ python utils/eval_mme.py --results_dir <folder path for mme results>
 ```
 
 ## Acknowledgement
-Some codes are based on the [Qwen2.5-vl](https://github.com/QwenLM/Qwen2.5-VL) and [SID](https://github.com/huofushuo/SID). Thanks for their excellent works!
+Some codes are based on the [Qwen2.5-vl](https://github.com/QwenLM/Qwen2.5-VL) and [SID](https://github.com/huofushuo/SID). Thanks for their excellent work!
 
 
 ## Citation
