@@ -15,6 +15,9 @@ conda create -n evrb python==3.10
 conda activate evrb
 python install -r requirements.txt
 python install qwen-vl-utils
+cd vendor
+pip install tokenizers==0.13.3 --no-deps --target=./
+pip install sentencepiece --no-deps --target=./
 ```
 
 
