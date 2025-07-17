@@ -77,45 +77,21 @@ class SplitDelimiterBehavior(Enum):
     CONTIGUOUS = "contiguous"
 
 
-# from .tokenizers import (
-#     AddedToken,
-#     Encoding,
-#     NormalizedString,
-#     PreTokenizedString,
-#     Regex,
-#     Token,
-#     Tokenizer,
-#     decoders,
-#     models,
-#     normalizers,
-#     pre_tokenizers,
-#     processors,
-#     trainers,
-# )
-import imp
-import os
-
-# 获取C扩展模块的绝对路径
-ext_path = os.path.join(os.path.dirname(__file__), "tokenizers.cpython-39-x86_64-linux-gnu.so")
-
-tokenizers_mod = imp.load_dynamic("tokenizers.tokenizers", ext_path)
-
-AddedToken = tokenizers_mod.AddedToken
-Encoding =  tokenizers_mod.Encoding
-NormalizedString    =   tokenizers_mod.NormalizedString
-PreTokenizedString   =   tokenizers_mod.PreTokenizedString
-Regex  =     tokenizers_mod.Regex
-Token   =    tokenizers_mod.Token
-Tokenizer   =    tokenizers_mod.Tokenizer
-decoders  =   tokenizers_mod.decoders
-models =   tokenizers_mod.models
-normalizers =  tokenizers_mod.normalizers
-pre_tokenizers =   tokenizers_mod.pre_tokenizers
-processors  =  tokenizers_mod.processors
-trainers   =   tokenizers_mod.trainers
-
-
-
+from .tokenizers import (
+    AddedToken,
+    Encoding,
+    NormalizedString,
+    PreTokenizedString,
+    Regex,
+    Token,
+    Tokenizer,
+    decoders,
+    models,
+    normalizers,
+    pre_tokenizers,
+    processors,
+    trainers,
+)
 from .implementations import (
     BertWordPieceTokenizer,
     ByteLevelBPETokenizer,

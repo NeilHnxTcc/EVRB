@@ -1,12 +1,14 @@
 
 #-------
 import sys
-sys.path.insert(0, "vendor")
-sys.path.insert(0,"vendor/transformers/src")
+import os
+script_dir = os.path.dirname(os.path.abspath(__file__))
+root_dir = script_dir.split('/scripts')[0]
+vendor_dir = os.path.join(root_dir, "vendor")
+sys.path.insert(0, vendor_dir)
 #-------
 
 import argparse
-import os
 import random
 
 import numpy as np
@@ -76,8 +78,8 @@ POPE_PATH = {
 def parse_args():
     parser = argparse.ArgumentParser(description="POPE evaluation on LVLMs.")
     parser.add_argument("--gpu-id", type=str,  default='0', help="specify the GPUs to load the model.")
-    parser.add_argument("--data-path", type=str, default="../datasets/coco/val2014", help="data path")
-    parser.add_argument("--gqa-data-path", type=str, default="../datasets/gqa/images", help="data path")
+    parser.add_argument("--data-path", type=str, default="../../datasets/coco/val2014", help="data path")
+    parser.add_argument("--gqa-data-path", type=str, default="../../datasets/gqa/images", help="data path")
     parser.add_argument("--cfg-path", type=str, default="./utils/llava/config/llava-1.5_eval.yaml", help="cfg path")
     parser.add_argument("--batch-size", type=int, default=1, help="batch size")
     parser.add_argument("--num_workers", type=int, default=1, help="num workers")

@@ -12,7 +12,7 @@
 ## Setup
 ```
 conda create -n evrb python==3.10
-conda activate SID
+conda activate evrb
 python install -r requirements.txt
 python install qwen-vl-utils
 ```

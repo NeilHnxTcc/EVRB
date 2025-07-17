@@ -292,15 +292,13 @@ def sample(
     bs = input_ids.shape[0]
     assert bs == 1
 
-
     model_inputs = prepare_inputs_for_generation(input_ids, **model_kwargs) # dict_keys(['input_ids', 'past_key_values', 'use_cache', 'attention_mask', 'images'])
-
+    model_inputs['attention_mask'] = model_kwargs['attention_mask']
     outputs = self(
         **model_inputs,
         return_dict=True,
         output_hidden_states=True,
     )
-
     hidden_states = outputs.hidden_states[-1]  # 33, num_token, 4096
     image_hidden_states = hidden_states[:,img_st:img_end]
     image_prob = torch.nn.functional.softmax(self.lm_head(image_hidden_states), dim= -1)

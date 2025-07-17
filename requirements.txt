@@ -62,7 +62,7 @@ pydantic_core==2.33.2
 pydub==0.25.1
 Pygments==2.19.1
 pyparsing==3.2.3
-python-dateutil==2.9.0.post0
+python-dateutil==2.9.0
 python-multipart==0.0.12
 pytz==2025.2
 PyYAML==6.0.2
@@ -88,7 +88,7 @@ torch==2.6.0
 torchaudio==2.6.0
 torchvision==0.21.0
 tqdm==4.67.1
-transformers==4.52.0.dev0
+transformers==4.52.0
 transformers-stream-generator==0.0.4
 triton==3.2.0
 typer==0.16.0

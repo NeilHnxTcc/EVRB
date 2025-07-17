@@ -10,4 +10,3 @@ utils/others/
 vendor/*
 !vendor/
 !vendor/transformers
-!vendor/tokenizers

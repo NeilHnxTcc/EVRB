@@ -13,7 +13,13 @@ from transformers import AutoTokenizer, BitsAndBytesConfig, LlamaConfig
 import transformers
 
 import math
-from transformers.models.llama.modeling_llama import LlamaRotaryEmbedding, LlamaLinearScalingRotaryEmbedding, LlamaDynamicNTKScalingRotaryEmbedding, apply_rotary_pos_emb, repeat_kv
+
+# import pdb; pdb.set_trace()
+# from transformers.models.llama.modeling_llama import LlamaRotaryEmbedding, LlamaLinearScalingRotaryEmbedding, LlamaDynamicNTKScalingRotaryEmbedding, apply_rotary_pos_emb, repeat_kv
+
+from transformers.models.llama.modeling_llama import LlamaRotaryEmbedding,  apply_rotary_pos_emb
+
+
 
 
 # Model Constants
@@ -356,6 +362,7 @@ class LLaVa(BaseModel):
                     "image_end": tokens_before.shape[1]+NUM_IMAGE_TOKENS, 
                     "response_start": input_ids.shape[1]+NUM_IMAGE_TOKENS-1,
                 }
+            
             output_ids = self.llama_model.generate(
                 input_ids=input_ids,
                 use_cache=True,
