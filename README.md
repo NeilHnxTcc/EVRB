@@ -98,7 +98,14 @@ If you find this work useful for your research, please cite [our paper](https://
   year={2025}
 }
 ```
-
+```
+Nanxing Hu, Xiaoyue Duan, Jinchao Zhang, and Guoliang Kang. 2025.
+Enhancing Visual Reliance in Text Generation: A Bayesian Perspective on
+Mitigating Hallucination in Large Vision-Language Models. In Proceedings
+of the 33rd ACM International Conference on Multimedia (MM ’25), October
+27–31, 2025, Dublin, Ireland. ACM, New York, NY, USA, 10 pages. https:
+//doi.org/10.1145/3746027.3755606
+```
 
 
 
