@@ -76,8 +76,9 @@ nohup python scripts/qwen_2_5_vl_7b/mme_evrb.py  --gpu-id 6  --save-folder ./out
 Additionally, running the upper codes, POPE can directly output the evaluation metrics, while CHAIR and MME output the generated texts. We need to run additional code to get the result:
 
 
-# chair
+
 ```
+# chair
 python utils/eval_chair.py --cap_file <jsonl file path for captions>
 # mme
 python utils/eval_mme.py --results_dir <folder path for mme results>
