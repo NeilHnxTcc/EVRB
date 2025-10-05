@@ -92,20 +92,13 @@ Some codes are based on the [Qwen2.5-vl](https://github.com/QwenLM/Qwen2.5-VL) a
 ## Citation
 If you find this work useful for your research, please cite [our paper](https://arxiv.org/abs/2505.19498):
 ```
-@article{hu2025enhancing,
+@inproceedings{hu2025enhancing,
   title={Enhancing Visual Reliance in Text Generation: A Bayesian Perspective on Mitigating Hallucination in Large Vision-Language Models},
   author={Hu, Nanxing and Duan, Xiaoyue and Zhang, Jinchao and Kang, Guoliang},
-  journal={arXiv preprint arXiv:2505.19498},
+  booktitle={Proceedings of the 33nd ACM International Conference on Multimedia},
+  pages={--},
   year={2025}
 }
-```
-```
-Nanxing Hu, Xiaoyue Duan, Jinchao Zhang, and Guoliang Kang. 2025.
-Enhancing Visual Reliance in Text Generation: A Bayesian Perspective on
-Mitigating Hallucination in Large Vision-Language Models. In Proceedings
-of the 33rd ACM International Conference on Multimedia (MM ’25), October
-27–31, 2025, Dublin, Ireland. ACM, New York, NY, USA, 10 pages. https:
-//doi.org/10.1145/3746027.3755606
 ```
 
 
