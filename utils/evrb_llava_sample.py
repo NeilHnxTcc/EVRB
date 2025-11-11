@@ -22,6 +22,94 @@ from transformers.generation.utils import SampleOutput
 
 from utils.hyper_config import hyper_param
 
+
+
+def prepare_inputs_for_generation(
+    input_ids, past_key_values=None, attention_mask=None, inputs_embeds=None, **kwargs
+):
+    if past_key_values:
+        input_ids = input_ids[:, -1:]
+    # if `inputs_embeds` are passed, we only want to use them in the 1st generation step
+    if inputs_embeds is not None and past_key_values is None:
+        model_inputs = {"inputs_embeds": inputs_embeds}
+    else:
+        model_inputs = {"input_ids": input_ids}
+    model_inputs.update(
+        {
+            "past_key_values": past_key_values,
+            "use_cache": kwargs.get("use_cache"),
+            "attention_mask": attention_mask,
+            "images": kwargs.get("images", None),
+        }
+    )
+    return model_inputs
+
+
+# Copied from transformers.models.bart.modeling_bart._expand_mask
+def _expand_mask(mask: torch.Tensor, dtype: torch.dtype, tgt_len: Optional[int] = None):
+    """
+    Expands attention_mask from `[bsz, seq_len]` to `[bsz, 1, tgt_seq_len, src_seq_len]`.
+    """
+    bsz, src_len = mask.size()
+    tgt_len = tgt_len if tgt_len is not None else src_len
+
+    expanded_mask = mask[:, None, None, :].expand(bsz, 1, tgt_len, src_len).to(dtype)
+
+    inverted_mask = 1.0 - expanded_mask
+
+    return inverted_mask.masked_fill(inverted_mask.to(torch.bool), torch.finfo(dtype).min)
+
+
+# Copied from transformers.models.bart.modeling_bart._make_causal_mask
+def _make_causal_mask(
+    input_ids_shape: torch.Size, dtype: torch.dtype, device: torch.device, past_key_values_length: int = 0
+):
+    """
+    Make causal mask used for bi-directional self-attention.
+    """
+    bsz, tgt_len = input_ids_shape
+    mask = torch.full((tgt_len, tgt_len), torch.finfo(dtype).min, device=device)
+    mask_cond = torch.arange(mask.size(-1), device=device)
+    mask.masked_fill_(mask_cond < (mask_cond + 1).view(mask.size(-1), 1), 0)
+    mask = mask.to(dtype)
+
+    if past_key_values_length > 0:
+        mask = torch.cat([torch.zeros(tgt_len, past_key_values_length, dtype=dtype, device=device), mask], dim=-1)
+    return mask[None, None, :, :].expand(bsz, 1, tgt_len, tgt_len + past_key_values_length)
+
+
+
+# Copied from transformers.models.bart.modeling_bart.BartDecoder._prepare_decoder_attention_mask
+def _prepare_decoder_attention_mask(self, attention_mask, input_shape, inputs_embeds, past_key_values_length):
+    # create causal mask
+    # [bsz, seq_len] -> [bsz, 1, tgt_seq_len, src_seq_len]
+    combined_attention_mask = None
+    if input_shape[-1] > 2:
+        combined_attention_mask = _make_causal_mask(
+            input_shape,
+            inputs_embeds.dtype,
+            device=inputs_embeds.device,
+            past_key_values_length=past_key_values_length,
+        ) 
+
+    if attention_mask is not None:
+        # [bsz, seq_len] -> [bsz, 1, tgt_seq_len, src_seq_len]
+        if attention_mask.shape[0] > 1:
+            input_shape = (input_shape[0], input_shape[1]//2)
+        expanded_attn_mask = _expand_mask(attention_mask, inputs_embeds.dtype, tgt_len=input_shape[-1]).to(
+            inputs_embeds.device
+        )
+        if attention_mask.shape[0] > 1:
+            expanded_attn_mask = torch.cat((expanded_attn_mask[:1], expanded_attn_mask[1:]),dim=-2)
+
+        combined_attention_mask = (
+            expanded_attn_mask if combined_attention_mask is None else expanded_attn_mask + combined_attention_mask
+        )
+    return combined_attention_mask
+
+
+
+
 class AnomalyDetector:
     def __init__(self, vv_threshold = None):
         self.sequence = None     # 原始序列
@@ -72,34 +160,39 @@ class AnomalyDetector:
             if anomaly_idx not in self.anomalies:
                 self.anomalies = torch.cat((self.anomalies, torch.tensor([anomaly_idx])))
 
-def prepare_inputs_for_generation(
-     input_ids, attn_mask = [], past_key_values=None, attention_mask=None, inputs_embeds=None, **kwargs
+def local_prepare_inputs_for_generation(
+     input_ids,  past_key_values=None, attention_mask=None, inputs_embeds=None, **kwargs
 ):
     bs, seq_len = input_ids.shape
     seq_len = seq_len + 24*24 -1 
-    attention_mask = torch.ones((bs, seq_len)).to(input_ids)
-    position_ids = attention_mask.long().cumsum(-1) - 1    
-    attention_mask[:,attn_mask] = 0
-    if past_key_values:
-        input_ids = input_ids[:, -1:]
-        position_ids = position_ids[:, -1:]
+
+    sub_mask = torch.tensor([[1,0],[0,1]]).to(attention_mask)
+    attention_mask = torch.cat((attention_mask, sub_mask), dim=-1)
+
+
+    position_ids = kwargs['position_ids'][-1:] + 1 
+    position_ids = position_ids.repeat(2)
+
+    input_ids = input_ids[:, -1:].repeat(1,2)
 
     # if `inputs_embeds` are passed, we only want to use them in the 1st generation step
     if inputs_embeds is not None and past_key_values is None:
         model_inputs = {"inputs_embeds": inputs_embeds}
     else:
         model_inputs = {"input_ids": input_ids}
+    
+    model_inputs['position_ids'] = position_ids
     model_inputs.update(
         {
             "past_key_values": past_key_values,
             "use_cache": kwargs.get("use_cache"),
             "attention_mask": attention_mask,
-            "images": kwargs.get("images", None),
+            "images":  None,
         }
     )
     return model_inputs
 
- 
+
 def sample(
     self,
     input_ids: torch.LongTensor,
@@ -227,6 +320,7 @@ def sample(
     >>> tokenizer.batch_decode(outputs, skip_special_tokens=True)
     ['Today is a beautiful day, and we must do everything possible to make it a day of celebration.']
     ```"""
+
     # init hyper parameters
     img_ent_thr = hyper_param.img_ent_thr
     pri_rec_thr = hyper_param.pri_rec_thr
@@ -292,13 +386,19 @@ def sample(
     bs = input_ids.shape[0]
     assert bs == 1
 
+
     model_inputs = prepare_inputs_for_generation(input_ids, **model_kwargs) # dict_keys(['input_ids', 'past_key_values', 'use_cache', 'attention_mask', 'images'])
-    model_inputs['attention_mask'] = model_kwargs['attention_mask']
+
+    # from time import time
+    # st_time = time()
     outputs = self(
         **model_inputs,
         return_dict=True,
         output_hidden_states=True,
     )
+    # print(f'duration: {time() - st_time}')
+    # import pdb; pdb.set_trace()
+
     hidden_states = outputs.hidden_states[-1]  # 33, num_token, 4096
     image_hidden_states = hidden_states[:,img_st:img_end]
     image_prob = torch.nn.functional.softmax(self.lm_head(image_hidden_states), dim= -1)
@@ -308,22 +408,58 @@ def sample(
     seq_length_with_past += 24*24 - 1 
     selected_entropy  = image_entropy[-1]
 
-
     top_attention_rank_index = torch.where(selected_entropy > img_ent_thr)[0] + img_st
     bottem_attention_rank_index = torch.where(selected_entropy <= img_ent_thr)[0] + img_st
 
 
+    # #------------------------------hnx-st-------------------------------------
+    # # locate the text tokens : img idx = 151655
+    # bs, token_num = input_ids.shape
+    # assert bs == 1
 
-    def initial_my_input(inputs, outputs, attn_mask,img_st_idx=34, img_len=24*24):
+    # img_st = torch.where(input_ids[0] == -200)[0].item()
+    # img_end = img_st +  24*24 -1 
+    # full_text_st  = img_end + 1
+    # text_st = img_st + 1
+
+    # # duplicate the text tokens
+    # new_input_ids = torch.cat([input_ids, input_ids[:, text_st:]], dim = -1)
+    
+    # # customize the attention_mask
+    # full_len = token_num  + 24*24 -1 
+    # attention_mask = torch.ones((bs, full_len)).to(input_ids)
+    # attention_mask = torch.cat([attention_mask, attention_mask[:,full_text_st:].clone()], dim = -1)
+    # additional_attn_mask = attention_mask.clone()
+
+    # attention_mask[:, full_len:] = 0
+    # attention_mask[:, top_attention_rank_index] = 0
+    # additional_attn_mask[:, full_text_st: full_len] = 0
+    # additional_attn_mask[:, bottem_attention_rank_index] = 0
+    # attention_mask = torch.cat([attention_mask, additional_attn_mask],dim = 0)
+    # # update the model kwargs and input ids
+    # model_kwargs['attention_mask'] = attention_mask
+    # input_ids = new_input_ids
+    # #------------------------------hnx-ed-------------------------------------
+
+    def initial_my_input(inputs, outputs, top_attention_rank_index, bottem_attention_rank_index, img_st_idx=34, img_len=24*24):
         input_ids = inputs['input_ids']
         bs, seq_len = input_ids.shape
-        seq_len = seq_len + 24*24 -1 
-        attention_mask = torch.ones((bs, seq_len)).to(input_ids)
-        attention_mask[:,attn_mask] = 0
+        full_len = seq_len + img_len -1 
+        full_text_st  = img_st_idx + img_len
+        attention_mask = torch.ones((bs, full_len)).to(input_ids)
+        attention_mask = torch.cat([attention_mask, attention_mask[:,full_text_st:].clone()], dim = -1)
+        additional_attn_mask = attention_mask.clone()
+
+        attention_mask[:, full_len:] = 0
+        attention_mask[:, top_attention_rank_index] = 0
+        additional_attn_mask[:, full_text_st: full_len] = 0
+        additional_attn_mask[:, bottem_attention_rank_index] = 0
+        attention_mask = torch.cat([attention_mask, additional_attn_mask],dim = 0)
+
 
         past_key_values = torch.stack([ torch.stack(layer,dim=0) for  layer in outputs['past_key_values'] ], dim = 0) # [32, 2, 1,32,num_token,dim]))
         result = {}
-        ids_after_img = input_ids[:,img_st_idx+1:]
+        ids_after_img = input_ids[:,img_st_idx+1:].repeat(1,2)
         img_end = img_st_idx + img_len
         ct_key_values = past_key_values[:,:,:,:,:img_end]
         result['input_ids'] = ids_after_img
@@ -331,11 +467,14 @@ def sample(
         result['use_cache'] = True
         result['attention_mask'] = attention_mask
         result['images'] = None
+        position_ids = torch.arange(full_text_st, full_len).to(attention_mask)
+        result['position_ids'] = position_ids.repeat(2)
         return result
     
-    model_inputs = initial_my_input(inputs=model_inputs, outputs=outputs, attn_mask= top_attention_rank_index,img_st_idx=img_st)
+    model_inputs = initial_my_input(model_inputs, outputs, top_attention_rank_index, bottem_attention_rank_index)
+
+
     flag = False
-    flag1 = True
     if do_eos:
         def kl_divergence(p, q):
             p = torch.clip(p, 1e-6, 1.0)
@@ -353,6 +492,8 @@ def sample(
         object_dict = {}
         idx_list = []
         id_shift = input_ids.shape[-1] - model_inputs['input_ids'].shape[-1] 
+
+
     while True:
         if synced_gpus:
             # Under synced_gpus the `forward` call must continue until all gpus complete their sequence.
@@ -363,36 +504,37 @@ def sample(
             # did all peers finish? the reduced sum will be 0.0 then
             if this_peer_finished_flag.item() == 0.0:
                 break
+
+
         if flag:
-            model_inputs = prepare_inputs_for_generation(input_ids, attn_mask = top_attention_rank_index, **model_kwargs)
+            model_kwargs['attention_mask'] = model_inputs['attention_mask']
+            model_kwargs['position_ids'] = model_inputs['position_ids']
+            model_inputs = local_prepare_inputs_for_generation(input_ids,  **model_kwargs)
+        
         flag = True
+
+        # st_time = time()
         outputs = self(
             **model_inputs,
             return_dict=True,
-            # ct_mask_tokens = top_attention_rank_index,
             output_attentions = do_eos,
         )
-        if flag1:
-            obs_model_kwargs = model_kwargs.copy()
-            obs_model_inputs = model_inputs.copy()
-            obs_model_inputs['attention_mask'][obs_model_inputs['attention_mask'] == 0] = 1
-            obs_model_inputs['attention_mask'][:, bottem_attention_rank_index] = 0
-            flag1 = False
-        else:       
-            obs_model_kwargs = self._update_model_kwargs_for_generation(
-                obs_outputs, obs_model_kwargs, is_encoder_decoder=self.config.is_encoder_decoder)
-            obs_model_inputs = prepare_inputs_for_generation(input_ids, attn_mask = bottem_attention_rank_index, **obs_model_kwargs)
+        # print(f'duration: {time() - st_time}')
+        # import pdb; pdb.set_trace()
 
-        obs_outputs = self(
-            **obs_model_inputs,
-            return_dict=True,
-            # ct_mask_tokens = bottem_attention_rank_index,
-        )
+        seq_num = outputs['logits'].shape[-2]
+        if  seq_num > 2:
+            origin_loc = seq_num // 2 -1 
+            logits = outputs['logits'][:, origin_loc]
+            obs_logits = outputs['logits'][:, -1]
+        else:
+            logits = outputs['logits'][:, -2]
+            obs_logits = outputs['logits'][:, -1]
+
         scale_factor = 0
         count = 0
+        
         if do_eos:
-            logits = outputs.logits
-            obs_logits = obs_outputs.logits
             clear_text_prob = torch.nn.functional.softmax(logits, dim= -1)  # token, 32000
             blur_text_prob = torch.nn.functional.softmax(obs_logits, dim= -1)  # token, 32000
             js_div = js_divergence(clear_text_prob, blur_text_prob) # token
@@ -431,7 +573,6 @@ def sample(
                     
                     idx_list.append(real_idx)
 
-                    # import pdb; pdb.set_trace()
                     if real_id not in object_dict.keys():
                         object_dict[real_id] = [real_js] # design for the vv js not aligned problem
                     else:
@@ -462,8 +603,8 @@ def sample(
             next_token_logits[:,2] = next_token_logits[:,2] * scale_factor
     
         if do_ct:
-            logits =  next_token_logits   # bs, num_token, channel
-            ct_logits = obs_outputs.logits[:,-1,:].to(copy=True, dtype=torch.float32, device=input_ids.device)
+            logits =  logits.to(copy=True, dtype=torch.float32, device=input_ids.device)
+            ct_logits = obs_logits.to(copy=True, dtype=torch.float32, device=input_ids.device)
             logits = logits_processor(input_ids, logits)
             logits = logits_warper(input_ids, logits)
             
@@ -557,3 +698,4 @@ def sample(
 
 def evolve_my_sampling():
     transformers.generation.utils.GenerationMixin.sample = sample
+    transformers.models.llama.modeling_llama.LlamaModel._prepare_decoder_attention_mask = _prepare_decoder_attention_mask
