@@ -4,7 +4,7 @@
 ## Overview
 
 <p align="center">
-    <img src="https://github.com/NeilHnxTcc/EVRB/blob/main/imgs/evrb.png" width="90%"></a> <br>
+    <img src="https://github.com/NeilHnxTcc/EVRB/blob/main/imgs/intro.png" width="90%"></a> <br>
 </p>
 
 
